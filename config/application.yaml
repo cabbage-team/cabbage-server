@@ -1,0 +1,12 @@
+server:
+  port: 8080
+datasource:
+  driverName: mysql
+  host: 127.0.0.1
+  port: 3306
+  database: cabbage
+  username: cabbage
+  password: 123456
+  charset: utf8mb4
+  loc: Asia/Shanghai
+  tableprefix: cabbage_
