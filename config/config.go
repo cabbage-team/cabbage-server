@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func InitConfig() {
+func init() {
 	workDir, _ := os.Getwd()
 	viper.SetConfigName("application")
 	viper.SetConfigType("yaml")
