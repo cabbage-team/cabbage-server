@@ -5,7 +5,14 @@ import (
 	"cabbage-server/model"
 )
 
-func GetUserByEmail(email string) (*model.User, error) {
+// CreateAccount 创建用户数据库操作
+func CreateAccount(user *model.User) {
+	var DB = db.GetDB()
+	DB.Create(&user)
+}
+
+// GetUserProfile 获取用户信息数据库操作
+func GetUserProfile(email string) (*model.User, error) {
 	var DB = db.GetDB()
 	var user model.User
 	if err := DB.Where("email = ?", email).First(&user).Error; err != nil {

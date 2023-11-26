@@ -9,7 +9,10 @@ import (
 func InitRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware())
-	r.GET("/users/:email", controller.GetUserByEmail)
+	/* v1 */
+	v1Router := r.Group("/v1")
+	v1Router.POST("/create/account", controller.CreateAccount)
+	v1Router.GET("/get/userprofile", controller.GetUserProfile)
 
 	return r
 }
