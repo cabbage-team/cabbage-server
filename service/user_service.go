@@ -5,6 +5,12 @@ import (
 	"cabbage-server/model"
 )
 
-func GetUserByEmail(email string) (*model.User, error) {
-	return dao.GetUserByEmail(email)
+// CreateAccount 创建新用户服务
+func CreateAccount(user *model.User) {
+	dao.CreateAccount(user)
+}
+
+// GetUserProfile 获取用户信息服务
+func GetUserProfile(email string) (*model.User, error) {
+	return dao.GetUserProfile(email)
 }
