@@ -6,9 +6,13 @@ import (
 )
 
 // CreateAccount 创建用户数据库操作
-func CreateAccount(user *model.User) {
+func CreateAccount(user *model.User) error {
 	var DB = db.GetDB()
+	if err := DB.Where("email = ?", user.Email).First(&user).Error; err != nil {
+		return err
+	}
 	DB.Create(&user)
+	return nil
 }
 
 // GetUserProfile 获取用户信息数据库操作
