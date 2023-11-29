@@ -2,7 +2,7 @@ package router
 
 import (
 	"cabbage-server/controller"
-	"github.com/gin-contrib/cors"
+	"cabbage-server/middleware"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -10,26 +10,7 @@ import (
 
 func InitRouter() *gin.Engine {
 	r := gin.Default()
-	r.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders: []string{
-			"Accept",
-			"Origin",
-			"Referer",
-			"Content-Type",
-			"Content-Length",
-			"X-Requested-With",
-			"Accept-Encoding",
-			"Access-Control-Request-Headers",
-			"Access-Control-Request-Method",
-			"User-Agent",
-			"Tenantid",
-			"X-CSRF-Token",
-			"Authorization",
-		},
-		AllowCredentials: true,
-	}))
+	r.Use(middleware.CORSMiddleware())
 	/* v1 */
 	v1Router := r.Group("/v1")
 	v1Router.POST("/create/account", controller.CreateAccount)
