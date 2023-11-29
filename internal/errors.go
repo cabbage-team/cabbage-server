@@ -3,12 +3,14 @@ package internal
 import (
 	"fmt"
 	"net/http"
+	"errors"
 )
 
 type ServerError struct {
 	Status int    // http 状态码
 	Code   int    // 错误码
 	Msg    string // 错误信息
+	ErrorMsg map[string]string //详细错误
 }
 
 func (e *ServerError) Error() string {
@@ -20,15 +22,16 @@ func (e *ServerError) Error() string {
 //	return e
 //}
 //
-//func (e *ServerError) Unwrap() error {
-//	return errors.New(e.Error())
-//}
+func (e *ServerError) Unwrap() error {
+	return errors.New(e.Error())
+}
 
 func New(status int, code int, message string) *ServerError {
 	return &ServerError{
 		Code:   code,
 		Status: status,
 		Msg:    message,
+		ErrorMsg: map[string]string{},
 	}
 }
 
