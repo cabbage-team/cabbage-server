@@ -5,10 +5,8 @@ import (
 	validate "cabbage-server/common/validate"
 	"cabbage-server/dto"
 	"cabbage-server/internal"
-	"cabbage-server/model"
 	"cabbage-server/response"
 	"cabbage-server/service"
-
 	"github.com/gin-gonic/gin"
 )
 
