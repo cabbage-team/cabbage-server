@@ -1,0 +1,8 @@
+host: localhost:8080
+info:
+  contact: {}
+  description: this is about novel swagger API
+  title: Cabbage server API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
