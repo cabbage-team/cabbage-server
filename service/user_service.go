@@ -2,15 +2,21 @@ package service
 
 import (
 	"cabbage-server/dao"
+	"cabbage-server/dto"
 	"cabbage-server/internal"
 	"cabbage-server/model"
 	"errors"
+
 	"gorm.io/gorm"
 )
 
 // CreateAccount 创建新用户服务
-func CreateAccount(user *model.User) error {
-	err := dao.CreateAccount(user)
+func CreateAccount(user *dto.SignupDTO) error {
+	err := dao.CreateAccount(&model.User{
+		Email: user.Email,
+		Name: user.Name,
+		Password: user.Password,
+	})
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return internal.UserNotFoundError

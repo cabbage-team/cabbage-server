@@ -1,32 +1,33 @@
 package controller
 
 import (
+	"cabbage-server/common/utils"
+	validate "cabbage-server/common/validate"
+	"cabbage-server/dto"
+	"cabbage-server/internal"
 	"cabbage-server/model"
 	"cabbage-server/response"
 	"cabbage-server/service"
-	"cabbage-server/util"
+
 	"github.com/gin-gonic/gin"
 )
 
 // CreateAccount 创建新用户
 func CreateAccount(c *gin.Context) {
 	defer response.Error(c)
-	var requestUser = model.User{}
-	err := c.Bind(&requestUser)
+	account := &dto.SignupDTO{}
+	err := c.BindJSON(account)
 	if err != nil {
 		panic(err)
 	}
-	name := requestUser.Name
-	email := requestUser.Email
-	if len(name) == 0 {
-		name = util.RandomString(10)
-		return
+	errMsg := validate.Validators(account)
+	if len(errMsg) != 0 {
+		// process errMsg
+		paramsError := internal.RequestParamsNotValidError
+		paramsError.ErrorMsg = errMsg
+		panic(paramsError)
 	}
-	if !util.VerifyEmail(email) {
-		panic("邮箱格式错误")
-		return
-	}
-	err = service.CreateAccount(&requestUser)
+	err = service.CreateAccount(account)
 	if err != nil {
 		panic(err)
 	}
@@ -37,7 +38,7 @@ func CreateAccount(c *gin.Context) {
 func GetUserProfile(c *gin.Context) {
 	defer response.Error(c)
 	email := c.Query("email")
-	if !util.VerifyEmail(email) {
+	if !utils.VerifyEmail(email) {
 		panic("email格式错误")
 	}
 	user, err := service.GetUserProfile(email)
