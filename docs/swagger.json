@@ -34,14 +34,14 @@
         },
         "/v1/api/user/profile": {
             "get": {
-                "description": "创建新用户",
+                "description": "获取用户信息",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "user"
                 ],
-                "summary": "Create user",
+                "summary": "get user profile",
                 "parameters": [
                     {
                         "type": "string",

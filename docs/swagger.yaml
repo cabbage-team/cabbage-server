@@ -41,14 +41,14 @@ paths:
     get:
       consumes:
       - application/json
-      description: 创建新用户
+      description: 获取用户信息
       parameters:
       - in: query
         name: email
         required: true
         type: string
       responses: {}
-      summary: Create user
+      summary: get user profile
       tags:
       - user
 swagger: "2.0"
