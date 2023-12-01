@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"cabbage-server/common/utils"
 	validate "cabbage-server/common/validate"
 	"cabbage-server/dto"
 	"cabbage-server/internal"
@@ -10,7 +9,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreateAccount 创建新用户
+// CreateAccount 
+// @Summary Create user
+// @Description 创建新用户
+// @Tags user
+// @Accept json
+// @Param request body dto.SignupDTO true "admin account"
+// @Router /v1/api/user/create [post]
 func CreateAccount(c *gin.Context) {
 	defer response.Error(c)
 	account := &dto.SignupDTO{}
@@ -33,13 +38,22 @@ func CreateAccount(c *gin.Context) {
 }
 
 // GetUserProfile 获取用户信息
+// CreateAccount 
+// @Summary get user profile
+// @Description 获取用户信息
+// @Tags user
+// @Accept json
+// @Param request query dto.UserProfileDTO true "admin account"
+// @Router /v1/api/user/profile [get]
 func GetUserProfile(c *gin.Context) {
 	defer response.Error(c)
-	email := c.Query("email")
-	if !utils.VerifyEmail(email) {
-		panic("email格式错误")
+	profile := dto.UserProfileDTO{}
+	c.BindQuery(profile)
+	errmsg := validate.Validators(&profile)
+	if len(errmsg) != 0 {
+		// 处理错误
 	}
-	user, err := service.GetUserProfile(email)
+	user, err := service.GetUserProfile(profile.Email)
 	if err != nil {
 		panic(err)
 	}

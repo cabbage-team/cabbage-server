@@ -1,8 +1,54 @@
+definitions:
+  dto.SignupDTO:
+    properties:
+      email:
+        type: string
+      name:
+        minLength: 10
+        type: string
+      password:
+        minLength: 10
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
 host: localhost:8080
 info:
   contact: {}
   description: this is about novel swagger API
   title: Cabbage server API
   version: "1.0"
-paths: {}
+paths:
+  /v1/api/user/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建新用户
+      parameters:
+      - description: admin account
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SignupDTO'
+      responses: {}
+      summary: Create user
+      tags:
+      - user
+  /v1/api/user/profile:
+    get:
+      consumes:
+      - application/json
+      description: 创建新用户
+      parameters:
+      - in: query
+        name: email
+        required: true
+        type: string
+      responses: {}
+      summary: Create user
+      tags:
+      - user
 swagger: "2.0"

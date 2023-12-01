@@ -11,3 +11,7 @@ type SignupDTO struct {
 	Email    string `form:"email" json:"email" validate:"required,email" validateMsg:"the email is required"`
 	Password string `json:"" form:"password" validate:"required,min=10" validateMsg:"the password minimum 10 characters required"`
 }
+
+type UserProfileDTO struct {
+	Email string `json:"email" form:"email" validate:"email,required"`
+}
