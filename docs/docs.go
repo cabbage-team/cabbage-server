@@ -237,6 +237,30 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/v1/api/user/login": {
+            "post": {
+                "description": "用户登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "user login",
+                "parameters": [
+                    {
+                        "description": "the user account",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginDTO"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/api/user/profile": {
             "get": {
                 "description": "获取用户信息",
@@ -275,6 +299,26 @@ const docTemplate = `{
                         8,
                         16
                     ]
+                }
+            }
+        },
+        "dto.LoginDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "key",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 10
                 }
             }
         },
