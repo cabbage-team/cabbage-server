@@ -59,3 +59,15 @@ func GetUserProfile(c *gin.Context) {
 	}
 	response.Success(c, gin.H{"data": user}, "请求成功")
 }
+
+// Login 用户登录
+// Login 
+// @Summary user login
+// @Description 用户登录
+// @Tags user
+// @Accept json
+// @Param request body dto.LoginDTO true "the user account"
+// @Router /v1/api/user/login [post]
+func Login(c *gin.Context){
+
+}
