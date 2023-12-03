@@ -1,4 +1,17 @@
 definitions:
+  dto.CommentOperatorDTO:
+    properties:
+      op:
+        enum:
+        - 1
+        - 2
+        - 4
+        - 8
+        - 16
+        type: integer
+    required:
+    - op
+    type: object
   dto.SignupDTO:
     properties:
       email:
@@ -14,6 +27,33 @@ definitions:
     - name
     - password
     type: object
+  dto.TagDTO:
+    properties:
+      cover:
+        description: 封面 配图 图片连接地址
+        type: string
+      createdby:
+        description: 创建者
+        type: string
+      description:
+        description: tag 描述
+        type: string
+      name:
+        description: tag 名称
+        type: string
+    required:
+    - cover
+    - createdby
+    - description
+    - name
+    type: object
+  dto.TagFollowDTO:
+    properties:
+      tagid:
+        type: string
+    required:
+    - tagid
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -21,6 +61,140 @@ info:
   title: Cabbage server API
   version: "1.0"
 paths:
+  /v1/api/comment/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建评论
+      responses: {}
+      summary: create comment
+      tags:
+      - comment
+  /v1/api/comment/del:
+    delete:
+      consumes:
+      - application/json
+      description: 删除评论
+      responses: {}
+      summary: comment delete
+      tags:
+      - comment
+  /v1/api/comment/operater:
+    post:
+      consumes:
+      - application/json
+      description: 操作评论(赞,踩,收藏,分享)
+      parameters:
+      - description: operator code
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CommentOperatorDTO'
+      responses: {}
+      summary: comment operator
+      tags:
+      - comment
+  /v1/api/comment/reply:
+    post:
+      consumes:
+      - application/json
+      description: 回复评论
+      responses: {}
+      summary: reply comment
+      tags:
+      - comment
+  /v1/api/post/create:
+    post:
+      consumes:
+      - application/json
+      description: 发帖
+      responses: {}
+      summary: create post
+      tags:
+      - post
+  /v1/api/post/del:
+    delete:
+      consumes:
+      - application/json
+      description: 删除帖子
+      responses: {}
+      summary: operator post
+      tags:
+      - post
+  /v1/api/post/operater:
+    post:
+      consumes:
+      - application/json
+      description: 操作帖子 赞 踩 收藏
+      responses: {}
+      summary: operator post
+      tags:
+      - post
+  /v1/api/post/search:
+    post:
+      consumes:
+      - application/json
+      description: 搜索帖子、文章
+      responses: {}
+      summary: search post
+      tags:
+      - post
+  /v1/api/tag/follow:
+    post:
+      consumes:
+      - application/json
+      description: 关注话题
+      parameters:
+      - description: topic
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TagFollowDTO'
+      responses: {}
+      summary: follow tag
+      tags:
+      - topic
+  /v1/api/tag/hide:
+    get:
+      consumes:
+      - application/json
+      description: 隐藏话题标签
+      parameters:
+      - in: query
+        name: tagid
+        required: true
+        type: string
+      responses: {}
+      summary: hide tag
+      tags:
+      - topic
+  /v1/api/tag/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取话题列表
+      responses: {}
+      summary: get topic
+      tags:
+      - topic
+  /v1/api/tag/new:
+    post:
+      consumes:
+      - application/json
+      description: 创建新话题标签
+      parameters:
+      - description: topic
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TagDTO'
+      responses: {}
+      summary: create new topic
+      tags:
+      - topic
   /v1/api/user/create:
     post:
       consumes:
@@ -41,14 +215,14 @@ paths:
     get:
       consumes:
       - application/json
-      description: 创建新用户
+      description: 获取用户信息
       parameters:
       - in: query
         name: email
         required: true
         type: string
       responses: {}
-      summary: Create user
+      summary: get user profile
       tags:
       - user
 swagger: "2.0"
