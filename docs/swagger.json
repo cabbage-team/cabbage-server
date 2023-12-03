@@ -8,6 +8,64 @@
     },
     "host": "localhost:8080",
     "paths": {
+        "/v1/api/tag/create": {
+            "post": {
+                "description": "创建新话题标签",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topic"
+                ],
+                "summary": "create new topic",
+                "parameters": [
+                    {
+                        "description": "topic",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TagDTO"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/api/tag/hide": {
+            "get": {
+                "description": "隐藏话题标签",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topic"
+                ],
+                "summary": "hide tag",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "tagid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/api/tag/list": {
+            "get": {
+                "description": "获取话题列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topic"
+                ],
+                "summary": "get topic",
+                "responses": {}
+            }
+        },
         "/v1/api/user/create": {
             "post": {
                 "description": "创建新用户",
@@ -73,6 +131,44 @@
                 "password": {
                     "type": "string",
                     "minLength": 10
+                }
+            }
+        },
+        "dto.TagDTO": {
+            "type": "object",
+            "required": [
+                "cover",
+                "createdby",
+                "description",
+                "name"
+            ],
+            "properties": {
+                "cover": {
+                    "description": "封面 配图 图片连接地址",
+                    "type": "string"
+                },
+                "createdby": {
+                    "description": "创建者",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "tag 描述",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "tag 名称",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TagFollowDTO": {
+            "type": "object",
+            "required": [
+                "tagid"
+            ],
+            "properties": {
+                "tagid": {
+                    "type": "string"
                 }
             }
         }

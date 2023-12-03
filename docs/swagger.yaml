@@ -14,6 +14,33 @@ definitions:
     - name
     - password
     type: object
+  dto.TagDTO:
+    properties:
+      cover:
+        description: 封面 配图 图片连接地址
+        type: string
+      createdby:
+        description: 创建者
+        type: string
+      description:
+        description: tag 描述
+        type: string
+      name:
+        description: tag 名称
+        type: string
+    required:
+    - cover
+    - createdby
+    - description
+    - name
+    type: object
+  dto.TagFollowDTO:
+    properties:
+      tagid:
+        type: string
+    required:
+    - tagid
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -21,6 +48,45 @@ info:
   title: Cabbage server API
   version: "1.0"
 paths:
+  /v1/api/tag/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建新话题标签
+      parameters:
+      - description: topic
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TagDTO'
+      responses: {}
+      summary: create new topic
+      tags:
+      - topic
+  /v1/api/tag/hide:
+    get:
+      consumes:
+      - application/json
+      description: 隐藏话题标签
+      parameters:
+      - in: query
+        name: tagid
+        required: true
+        type: string
+      responses: {}
+      summary: hide tag
+      tags:
+      - topic
+  /v1/api/tag/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取话题列表
+      responses: {}
+      summary: get topic
+      tags:
+      - topic
   /v1/api/user/create:
     post:
       consumes:

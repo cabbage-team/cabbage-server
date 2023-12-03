@@ -10,3 +10,6 @@ type TagDTO struct {
 	// 封面 配图 图片连接地址
 	Cover string `json:"cover" form:"cover" validate:"required" validateMsg:"this field is required"`
 }
+type TagFollowDTO struct{
+	TagID string `json:"tagid" form:"tagid" validate:"required" validateMsg:"the tagid is required"`
+}
