@@ -15,5 +15,5 @@ type UserTag struct {
 }
 
 func (UserTag) TableName() string {
-	return fmt.Sprintf("%suser", viper.GetString("datasource.tableprefix"))
+	return fmt.Sprintf("%suser_tag", viper.GetString("datasource.tableprefix"))
 }
