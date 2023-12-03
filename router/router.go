@@ -25,11 +25,19 @@ func InitRouter() *gin.Engine {
 	TagsAPI.GET("list", controller.ReadTags)     // 查询所有tag
 	TagsAPI.POST("hide", controller.HideTag)     // 当前用户hide一个tag或者取消hide
 	TagsAPI.POST("follow", controller.FollowTag) // 当前用户follow一个tag或者取消follow
-
+	TagsAPI.POST("new",controller.CreateTag)
     // comment
     CommentAPI := v1Router.Group("comment")
     CommentAPI.POST("create",controller.CommentCreate)
     CommentAPI.POST("reply",controller.CommentReply)
+	CommentAPI.POST("operator",controller.CommentOperator)
+	CommentAPI.DELETE("del",controller.CommentDelete)
+	// post
+	PostAPI := v1Router.Group("post")
+	PostAPI.GET("create",controller.PostCreate)
+	PostAPI.GET("search",controller.PostSearch)
+	PostAPI.GET("operater",controller.PostOperator)
+	PostAPI.DELETE("del",controller.PostDelete)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }
