@@ -70,7 +70,16 @@ paths:
       summary: create comment
       tags:
       - comment
-  /v1/api/comment/reply:
+  /v1/api/comment/del:
+    delete:
+      consumes:
+      - application/json
+      description: 删除评论
+      responses: {}
+      summary: comment delete
+      tags:
+      - comment
+  /v1/api/comment/operater:
     post:
       consumes:
       - application/json
@@ -86,6 +95,15 @@ paths:
       summary: comment operator
       tags:
       - comment
+  /v1/api/comment/reply:
+    post:
+      consumes:
+      - application/json
+      description: 回复评论
+      responses: {}
+      summary: reply comment
+      tags:
+      - comment
   /v1/api/post/create:
     post:
       consumes:
@@ -93,6 +111,15 @@ paths:
       description: 发帖
       responses: {}
       summary: create post
+      tags:
+      - post
+  /v1/api/post/del:
+    delete:
+      consumes:
+      - application/json
+      description: 删除帖子
+      responses: {}
+      summary: operator post
       tags:
       - post
   /v1/api/post/operater:
@@ -113,20 +140,20 @@ paths:
       summary: search post
       tags:
       - post
-  /v1/api/tag/create:
+  /v1/api/tag/follow:
     post:
       consumes:
       - application/json
-      description: 创建新话题标签
+      description: 关注话题
       parameters:
       - description: topic
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.TagDTO'
+          $ref: '#/definitions/dto.TagFollowDTO'
       responses: {}
-      summary: create new topic
+      summary: follow tag
       tags:
       - topic
   /v1/api/tag/hide:
@@ -150,6 +177,22 @@ paths:
       description: 获取话题列表
       responses: {}
       summary: get topic
+      tags:
+      - topic
+  /v1/api/tag/new:
+    post:
+      consumes:
+      - application/json
+      description: 创建新话题标签
+      parameters:
+      - description: topic
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TagDTO'
+      responses: {}
+      summary: create new topic
       tags:
       - topic
   /v1/api/user/create:

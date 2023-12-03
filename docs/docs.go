@@ -29,7 +29,20 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/v1/api/comment/reply": {
+        "/v1/api/comment/del": {
+            "delete": {
+                "description": "删除评论",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comment"
+                ],
+                "summary": "comment delete",
+                "responses": {}
+            }
+        },
+        "/v1/api/comment/operater": {
             "post": {
                 "description": "操作评论(赞,踩,收藏,分享)",
                 "consumes": [
@@ -53,6 +66,19 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/v1/api/comment/reply": {
+            "post": {
+                "description": "回复评论",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comment"
+                ],
+                "summary": "reply comment",
+                "responses": {}
+            }
+        },
         "/v1/api/post/create": {
             "post": {
                 "description": "发帖",
@@ -63,6 +89,19 @@ const docTemplate = `{
                     "post"
                 ],
                 "summary": "create post",
+                "responses": {}
+            }
+        },
+        "/v1/api/post/del": {
+            "delete": {
+                "description": "删除帖子",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "post"
+                ],
+                "summary": "operator post",
                 "responses": {}
             }
         },
@@ -92,16 +131,16 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/v1/api/tag/create": {
+        "/v1/api/tag/follow": {
             "post": {
-                "description": "创建新话题标签",
+                "description": "关注话题",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "topic"
                 ],
-                "summary": "create new topic",
+                "summary": "follow tag",
                 "parameters": [
                     {
                         "description": "topic",
@@ -109,7 +148,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.TagDTO"
+                            "$ref": "#/definitions/dto.TagFollowDTO"
                         }
                     }
                 ],
@@ -147,6 +186,30 @@ const docTemplate = `{
                     "topic"
                 ],
                 "summary": "get topic",
+                "responses": {}
+            }
+        },
+        "/v1/api/tag/new": {
+            "post": {
+                "description": "创建新话题标签",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "topic"
+                ],
+                "summary": "create new topic",
+                "parameters": [
+                    {
+                        "description": "topic",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TagDTO"
+                        }
+                    }
+                ],
                 "responses": {}
             }
         },
