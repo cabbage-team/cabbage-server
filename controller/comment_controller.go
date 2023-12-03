@@ -1,6 +1,8 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 // CommentCreate 
 // @Summary create comment
@@ -29,12 +31,22 @@ func CommentReply(c *gin.Context) {
 // @Tags comment
 // @Accept json
 // @Param request body dto.CommentOperatorDTO true "operator code"
-// @Router /v1/api/comment/reply [post]
-func CommentOperator(){
+// @Router /v1/api/comment/operater [post]
+func CommentOperator(c *gin.Context){
 	const (
 		CommentOperatorLike = 1<< iota
 		CommentOperatorDiss
 		CommentOperatorFavorite
 		CommentOperatorShare
 	)
+}
+
+// CommentOperator
+// @Summary comment delete
+// @Description 删除评论
+// @Tags comment
+// @Accept json
+// @Router /v1/api/comment/del [delete]
+func CommentDelete(c *gin.Context){
+
 }

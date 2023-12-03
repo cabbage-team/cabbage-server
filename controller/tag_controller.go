@@ -38,7 +38,7 @@ func HideTag(c *gin.Context) {
 // @Tags topic
 // @Accept json
 // @Param request body dto.TagFollowDTO true "topic"
-// @Router /v1/api/tag/create [post]
+// @Router /v1/api/tag/follow [post]
 func FollowTag(c *gin.Context) {
 
 }
@@ -49,7 +49,7 @@ func FollowTag(c *gin.Context) {
 // @Tags topic
 // @Accept json
 // @Param request body dto.TagDTO true "topic"
-// @Router /v1/api/tag/create [post]
+// @Router /v1/api/tag/new [post]
 func CreateTag(c *gin.Context) {
 	tag := dto.TagDTO{}
 	err := c.BindJSON(tag)
