@@ -12,6 +12,7 @@ import (
 func InitRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware())
+	r.Use(middleware.RequestLimit())
 	/* v1 */
 	v1Router := r.Group("/v1/api")
 
@@ -25,6 +26,10 @@ func InitRouter() *gin.Engine {
 	TagsAPI.POST("hide", controller.HideTag)     // 当前用户hide一个tag或者取消hide
 	TagsAPI.POST("follow", controller.FollowTag) // 当前用户follow一个tag或者取消follow
 
+    // comment
+    CommentAPI := v1Router.Group("comment")
+    CommentAPI.POST("create",controller.CommentCreate)
+    CommentAPI.POST("reply",controller.CommentReply)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }
