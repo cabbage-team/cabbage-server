@@ -16,6 +16,82 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/api/comment/create": {
+            "post": {
+                "description": "创建评论",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comment"
+                ],
+                "summary": "create comment",
+                "responses": {}
+            }
+        },
+        "/v1/api/comment/reply": {
+            "post": {
+                "description": "操作评论(赞,踩,收藏,分享)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comment"
+                ],
+                "summary": "comment operator",
+                "parameters": [
+                    {
+                        "description": "operator code",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CommentOperatorDTO"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/api/post/create": {
+            "post": {
+                "description": "发帖",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "post"
+                ],
+                "summary": "create post",
+                "responses": {}
+            }
+        },
+        "/v1/api/post/operater": {
+            "post": {
+                "description": "操作帖子 赞 踩 收藏",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "post"
+                ],
+                "summary": "operator post",
+                "responses": {}
+            }
+        },
+        "/v1/api/post/search": {
+            "post": {
+                "description": "搜索帖子、文章",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "post"
+                ],
+                "summary": "search post",
+                "responses": {}
+            }
+        },
         "/v1/api/tag/create": {
             "post": {
                 "description": "创建新话题标签",
@@ -121,6 +197,24 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CommentOperatorDTO": {
+            "type": "object",
+            "required": [
+                "op"
+            ],
+            "properties": {
+                "op": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2,
+                        4,
+                        8,
+                        16
+                    ]
+                }
+            }
+        },
         "dto.SignupDTO": {
             "type": "object",
             "required": [
@@ -193,6 +287,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "this is about novel swagger API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
+	LeftDelim:        "{{",
+	RightDelim:       "}}",
 }
 
 func init() {

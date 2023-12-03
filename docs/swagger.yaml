@@ -1,4 +1,17 @@
 definitions:
+  dto.CommentOperatorDTO:
+    properties:
+      op:
+        enum:
+        - 1
+        - 2
+        - 4
+        - 8
+        - 16
+        type: integer
+    required:
+    - op
+    type: object
   dto.SignupDTO:
     properties:
       email:
@@ -48,6 +61,58 @@ info:
   title: Cabbage server API
   version: "1.0"
 paths:
+  /v1/api/comment/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建评论
+      responses: {}
+      summary: create comment
+      tags:
+      - comment
+  /v1/api/comment/reply:
+    post:
+      consumes:
+      - application/json
+      description: 操作评论(赞,踩,收藏,分享)
+      parameters:
+      - description: operator code
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CommentOperatorDTO'
+      responses: {}
+      summary: comment operator
+      tags:
+      - comment
+  /v1/api/post/create:
+    post:
+      consumes:
+      - application/json
+      description: 发帖
+      responses: {}
+      summary: create post
+      tags:
+      - post
+  /v1/api/post/operater:
+    post:
+      consumes:
+      - application/json
+      description: 操作帖子 赞 踩 收藏
+      responses: {}
+      summary: operator post
+      tags:
+      - post
+  /v1/api/post/search:
+    post:
+      consumes:
+      - application/json
+      description: 搜索帖子、文章
+      responses: {}
+      summary: search post
+      tags:
+      - post
   /v1/api/tag/create:
     post:
       consumes:
