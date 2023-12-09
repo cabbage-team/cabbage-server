@@ -71,6 +71,14 @@ func FindUserByName(name string) (*model.User, error) {
 	return user, nil
 }
 
+func CheckNickName(name string) error {
+	_, err := dao.FindUserByName(name)
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return internal.UserAlreadyExists
+	}
+	return nil
+}
+
 func ProfileShare(user string) (*model.UserProfile, error) {
 	_user, err := dao.FindUserByName(user)
 	if err != nil {
