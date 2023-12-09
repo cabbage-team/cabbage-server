@@ -1,16 +1,19 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"cabbage-server/boot"
 
+	"github.com/gin-gonic/gin"
+)
 
-// PostCreate 
+// PostCreate
 // @Summary create post
 // @Description 发帖
 // @Tags post
 // @Accept json
 // @Router /v1/api/post/create [post]
 func PostCreate(c *gin.Context){
-
+	go boot.Emit.Emit("post:create","创建帖子")
 }
 
 // PostSearch 
@@ -18,9 +21,9 @@ func PostCreate(c *gin.Context){
 // @Description 搜索帖子、文章
 // @Tags post
 // @Accept json
-// @Router /v1/api/post/search [post]
+// @Router /v1/api/post/search [get]
 func PostSearch(c *gin.Context){
-
+	go boot.Emit.Emit("post:search",nil)
 }
 
 // PostOperator 
@@ -30,7 +33,7 @@ func PostSearch(c *gin.Context){
 // @Accept json
 // @Router /v1/api/post/operater [post]
 func PostOperator(c *gin.Context){
-
+	go boot.Emit.Emit("post:search","12","33")
 }
 
 
@@ -41,5 +44,5 @@ func PostOperator(c *gin.Context){
 // @Accept json
 // @Router /v1/api/post/del [delete]
 func PostDelete(c *gin.Context){
-
+	go boot.Emit.Emit("post:delete", "","")
 }
