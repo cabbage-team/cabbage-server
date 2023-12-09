@@ -16,7 +16,7 @@ type Post struct {
 	Diss int64 `json:"diss" gorm:"column:diss"`
 	Share int64 `json:"share" gorm:"column:share"`
 	Favorite int64 `json:"favorite" gorm:"column:favorite"`
-	Tags    []string `json:"tag" gorm:"column:tags"`
+	// Tags    []string `json:"tag" gorm:"column:tags"`
 }
 
 func (Post) TableName() string {
