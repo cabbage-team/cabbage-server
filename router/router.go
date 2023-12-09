@@ -19,6 +19,7 @@ func InitRouter() *gin.Engine {
 	UserAPI := v1Router.Group("user")
 	UserAPI.POST("create", controller.CreateAccount)
 	UserAPI.GET("profile", controller.GetUserProfile)
+	UserAPI.GET("name/check", controller.CheckNickName)
 
 	// 参考 https://dev.to/tags
 	TagsAPI := v1Router.Group("tag")
