@@ -17,7 +17,10 @@ import (
 // @Accept json
 // @Router /v1/api/tag/list [get]
 func ReadTags(c *gin.Context) {
-	tags := service.ReadTags()
+	tags,err := service.ReadTags()
+	if err != nil {
+		response.Error(c)
+	}
 	response.Success(c, gin.H{"data": tags}, "请求成功")
 }
 
