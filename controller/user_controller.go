@@ -1,15 +1,17 @@
 package controller
 
 import (
+	"cabbage-server/boot"
 	validate "cabbage-server/common/validate"
 	"cabbage-server/dto"
 	"cabbage-server/internal"
 	"cabbage-server/response"
 	"cabbage-server/service"
+
 	"github.com/gin-gonic/gin"
 )
 
-// CreateAccount 
+// CreateAccount
 // @Summary Create user
 // @Description 创建新用户
 // @Tags user
@@ -17,22 +19,24 @@ import (
 // @Param request body dto.SignupDTO true "admin account"
 // @Router /v1/api/user/create [post]
 func CreateAccount(c *gin.Context) {
-	defer response.Error(c)
 	account := &dto.SignupDTO{}
 	err := c.BindJSON(account)
 	if err != nil {
-		panic(err)
+		response.Error(c,err)
 	}
 	errMsg := validate.Validators(account)
 	if len(errMsg) != 0 {
 		// process errMsg
 		paramsError := internal.RequestParamsNotValidError
 		paramsError.ErrorMsg = errMsg
-		panic(paramsError)
+		response.Error(c,paramsError)
+		return
 	}
-	err = service.CreateAccount(account)
+	go boot.Emit.Emit("user:register",account.Name,account.Email)
+	_,err = service.CreateAccount(account)
 	if err != nil {
-		panic(err)
+		response.Error(c,err)
+		return
 	}
 	response.Success(c, nil, "注册成功")
 }
@@ -46,7 +50,6 @@ func CreateAccount(c *gin.Context) {
 // @Param request query dto.UserProfileDTO true "admin account"
 // @Router /v1/api/user/profile [get]
 func GetUserProfile(c *gin.Context) {
-	defer response.Error(c)
 	profile := dto.UserProfileDTO{}
 	c.BindQuery(profile)
 	errmsg := validate.Validators(&profile)
@@ -55,7 +58,7 @@ func GetUserProfile(c *gin.Context) {
 	}
 	user, err := service.GetUserProfile(profile.Email)
 	if err != nil {
-		panic(err)
+		response.Error(c,err)
 	}
 	response.Success(c, gin.H{"data": user}, "请求成功")
 }
