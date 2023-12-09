@@ -18,6 +18,7 @@ func FindProfileByUID(uid int64) (*model.UserProfile, error) {
 	profile := &model.UserProfile{}
 	err := db.DB.Model(&model.UserProfile{}).
 		Where("user_id = ?", uid).
+		Select("twitter, mastodon, facebook, youtobe, gmail, github, insgram, telegram").
 		First(profile).
 		Error
 	if err != nil {
