@@ -6,6 +6,6 @@ type CommentOperatorDTO struct {
 }
 
 type CommentDTO struct {
-	Post int `json:"post"`
-	Content string `json:"content"`
+	Post int `json:"post" validate:"number,required" validateMsg:"this field must be number"` 
+	Content string `json:"content" validate:"min=1,required" validateMsg:"this field must be more than 1 character"`
 }
