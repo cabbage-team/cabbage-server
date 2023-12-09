@@ -35,7 +35,7 @@ func CommentCreate(c *gin.Context) {
 		response.Error(c,err)
 		return
 	}
-	response.Success(c,gin.H{},"OK")
+	response.Success(c,gin.H{})
 }
 
 

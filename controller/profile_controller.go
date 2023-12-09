@@ -23,5 +23,5 @@ func ProfileSharre(ctx *gin.Context){
 	}
 	response.Success(ctx,gin.H{
 		"data":profile,
-	},"OK")
+	})
 }

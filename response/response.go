@@ -16,8 +16,8 @@ func Response(ctx *gin.Context, httpStatus int, code int, data gin.H, msg string
 }
 
 // Success 成功响应信息
-func Success(ctx *gin.Context, data gin.H, msg string) {
-	Response(ctx, http.StatusOK, 0, data, msg)
+func Success(ctx *gin.Context, data gin.H) {
+	Response(ctx, http.StatusOK, 0, data, "OK")
 }
 
 func Fail(ctx *gin.Context, data gin.H, msg string) {
