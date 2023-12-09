@@ -60,6 +60,6 @@ func initAutoMigrate(db *gorm.DB) {
 	}
 }
 
-func GetDB() *gorm.DB {
-	return DB
+func init(){
+	InitDB()
 }
