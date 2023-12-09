@@ -9,8 +9,8 @@ import (
 
 type CommentOperator struct {
 	*gorm.Model
-	UserID    int64 `json:"userid" gorm:"column:user_id"`
-	CommentID int64 `json:"commentId" gorm:"column:comment_id"`
+	UserID    int64 `json:"userid" gorm:"column:user_id;index"`
+	CommentID int64 `json:"commentId" gorm:"column:comment_id;index"`
 	OPCode    int   `json:"OPCode" gorm:"column:op_code"`
 }
 

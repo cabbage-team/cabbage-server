@@ -7,20 +7,34 @@ import (
 
 // CreateAccount 创建用户数据库操作
 func CreateAccount(user *model.User) error {
-	var DB = db.GetDB()
-	if err := DB.Where("email = ?", user.Email).First(&user).Error; err != nil {
+	err := db.DB.Model(&model.User{}).Create(user).Error
+	if err != nil {
 		return err
+	} else {
+		return nil
 	}
-	DB.Create(&user)
-	return nil
 }
 
 // GetUserProfile 获取用户信息数据库操作
-func GetUserProfile(email string) (*model.User, error) {
-	var DB = db.GetDB()
-	var user model.User
-	if err := DB.Where("email = ?", email).First(&user).Error; err != nil {
+func FindUserByEmail(email string) (*model.User, error) {
+	user := &model.User{}
+	err := db.DB.Model(&model.User{}).Where("email = ?", email).First(user).Error
+	if err != nil {
 		return nil, err
+	} else {
+		return user, nil
 	}
-	return &user, nil
+}
+
+func FindUserByName(name string) (*model.User, error) {
+	user := &model.User{}
+	err := db.DB.Model(&model.User{}).
+		Where("name = ?", name).
+		First(user).
+		Error
+	if err != nil {
+		return nil, err
+	} else {
+		return user, nil
+	}
 }

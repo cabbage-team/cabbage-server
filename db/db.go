@@ -12,7 +12,7 @@ import (
 
 var DB *gorm.DB
 
-func InitDB() *gorm.DB {
+func InitDB(){
 	driverName := viper.GetString("datasource.driverName")
 	host := viper.GetString("datasource.host")
 	port := viper.GetString("datasource.port")
@@ -43,15 +43,19 @@ func InitDB() *gorm.DB {
 	}
 	initAutoMigrate(db)
 	DB = db
-	return db
 }
 
 func initAutoMigrate(db *gorm.DB) {
-	_ = db.AutoMigrate(&model.User{})
-	_ = db.AutoMigrate(&model.Tag{})
-	_ = db.AutoMigrate(&model.UserTag{})
-}
-
-func GetDB() *gorm.DB {
-	return DB
+	err := db.AutoMigrate(
+		&model.Comment{},
+		&model.CommentOperator{},
+		&model.Post{},
+		&model.PostOperator{},
+		&model.Tag{},
+		&model.User{},
+		&model.UserTag{},
+		&model.UserProfile{},
+	)
+	if err != nil {
+	}
 }

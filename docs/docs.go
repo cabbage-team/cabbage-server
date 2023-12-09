@@ -16,6 +16,28 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/api/bio/{name}": {
+            "get": {
+                "description": "个人主页分享",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "post"
+                ],
+                "summary": "profile share",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "the user name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/api/comment/create": {
             "post": {
                 "description": "创建评论",
@@ -26,6 +48,17 @@ const docTemplate = `{
                     "comment"
                 ],
                 "summary": "create comment",
+                "parameters": [
+                    {
+                        "description": "comment content",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CommentDTO"
+                        }
+                    }
+                ],
                 "responses": {}
             }
         },
@@ -79,6 +112,19 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/v1/api/comment/view": {
+            "get": {
+                "description": "查看评论",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comment"
+                ],
+                "summary": "get comment",
+                "responses": {}
+            }
+        },
         "/v1/api/post/create": {
             "post": {
                 "description": "发帖",
@@ -119,7 +165,7 @@ const docTemplate = `{
             }
         },
         "/v1/api/post/search": {
-            "post": {
+            "get": {
                 "description": "搜索帖子、文章",
                 "consumes": [
                     "application/json"
@@ -237,6 +283,52 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/v1/api/user/login": {
+            "post": {
+                "description": "用户登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "user login",
+                "parameters": [
+                    {
+                        "description": "the user account",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginDTO"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/api/user/name/check": {
+            "get": {
+                "description": "检查昵称",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "check user name",
+                "parameters": [
+                    {
+                        "minLength": 4,
+                        "type": "string",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/api/user/profile": {
             "get": {
                 "description": "获取用户信息",
@@ -260,12 +352,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.CommentDTO": {
+            "type": "object",
+            "required": [
+                "content",
+                "post"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "post": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.CommentOperatorDTO": {
             "type": "object",
             "required": [
+                "cid",
                 "op"
             ],
             "properties": {
+                "cid": {
+                    "type": "integer"
+                },
                 "op": {
                     "type": "integer",
                     "enum": [
@@ -275,6 +387,26 @@ const docTemplate = `{
                         8,
                         16
                     ]
+                }
+            }
+        },
+        "dto.LoginDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "key",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 10
                 }
             }
         },
@@ -291,7 +423,7 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string",
-                    "minLength": 10
+                    "minLength": 4
                 },
                 "password": {
                     "type": "string",

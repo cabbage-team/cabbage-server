@@ -17,8 +17,11 @@ import (
 // @Accept json
 // @Router /v1/api/tag/list [get]
 func ReadTags(c *gin.Context) {
-	tags := service.ReadTags()
-	response.Success(c, gin.H{"data": tags}, "请求成功")
+	tags,err := service.ReadTags()
+	if err != nil {
+		response.Error(c,err)
+	}
+	response.Success(c, gin.H{"data": tags})
 }
 
 // hide tag 
@@ -64,5 +67,5 @@ func CreateTag(c *gin.Context) {
 	// 获取数据
 	// service.CreateTag(tag)
 	//
-	response.Success(c, gin.H{}, "OK")
+	response.Success(c, gin.H{})
 }

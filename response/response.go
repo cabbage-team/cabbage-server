@@ -16,8 +16,8 @@ func Response(ctx *gin.Context, httpStatus int, code int, data gin.H, msg string
 }
 
 // Success 成功响应信息
-func Success(ctx *gin.Context, data gin.H, msg string) {
-	Response(ctx, http.StatusOK, 200, data, msg)
+func Success(ctx *gin.Context, data gin.H) {
+	Response(ctx, http.StatusOK, 0, data, "OK")
 }
 
 func Fail(ctx *gin.Context, data gin.H, msg string) {
@@ -25,11 +25,22 @@ func Fail(ctx *gin.Context, data gin.H, msg string) {
 }
 
 // Error 错误响应信息
-func Error(c *gin.Context) {
-	err := recover()
+func Error(c *gin.Context, err error) {
 	if serverErr, ok := err.(*internal.ServerError); ok {
-		Response(c, serverErr.Status, serverErr.Code, nil, serverErr.Msg)
-		return
+		if len(serverErr.ErrorMsg) != 0 {
+			c.JSON(serverErr.Status, gin.H{
+				"code":  serverErr.Code,
+				"message": serverErr.Msg,
+				"error":   serverErr.ErrorMsg,
+			})
+		} else {
+			c.JSON(serverErr.Status, gin.H{
+				"code":  serverErr.Code,
+				"message": serverErr.Msg,
+			})
+		}
+	}else{
+		Fail(c,gin.H{
+		},"some thing wrong")
 	}
-	Fail(c, nil, err.(string))
 }

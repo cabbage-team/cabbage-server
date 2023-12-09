@@ -12,13 +12,14 @@ import (
 func InitRouter() *gin.Engine {
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware())
-	r.Use(middleware.RequestLimit())
+	// r.Use(middleware.RequestLimit())
 	/* v1 */
 	v1Router := r.Group("/v1/api")
 
 	UserAPI := v1Router.Group("user")
 	UserAPI.POST("create", controller.CreateAccount)
 	UserAPI.GET("profile", controller.GetUserProfile)
+	UserAPI.GET("name/check", controller.CheckNickName)
 
 	// 参考 https://dev.to/tags
 	TagsAPI := v1Router.Group("tag")
@@ -32,12 +33,16 @@ func InitRouter() *gin.Engine {
     CommentAPI.POST("reply",controller.CommentReply)
 	CommentAPI.POST("operator",controller.CommentOperator)
 	CommentAPI.DELETE("del",controller.CommentDelete)
+	CommentAPI.GET("view",controller.CommentView)
 	// post
 	PostAPI := v1Router.Group("post")
-	PostAPI.GET("create",controller.PostCreate)
+	PostAPI.POST("create",controller.PostCreate)
 	PostAPI.GET("search",controller.PostSearch)
-	PostAPI.GET("operater",controller.PostOperator)
+	PostAPI.POST("operater",controller.PostOperator)
 	PostAPI.DELETE("del",controller.PostDelete)
+
+	ProfileShare := v1Router.Group("bio")
+	ProfileShare.GET(":name",controller.ProfileSharre)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }
