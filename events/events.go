@@ -19,9 +19,13 @@ func init() {
 	boot.Emit.On("comment:operator", func(args ...any) {
 		boot.Logger.Info("the comment operater")
 	})
+
+	boot.Emit.On("comment:view", func(args ...any) {
+		boot.Logger.Info("the comment view")
+	})
 	// the post create event
 	boot.Emit.On("post:create", func(args ...any) {
-		boot.Logger.Info("the post create")
+		boot.Logger.Info("the post create"+args[0].(string))
 	})
 	// the post delete event
 	boot.Emit.On("post:delete", func(args ...any) {
