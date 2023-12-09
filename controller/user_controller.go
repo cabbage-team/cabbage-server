@@ -38,7 +38,7 @@ func CreateAccount(c *gin.Context) {
 		response.Error(c,err)
 		return
 	}
-	response.Success(c, nil, "注册成功")
+	response.Success(c, gin.H{})
 }
 
 // GetUserProfile 获取用户信息
@@ -50,17 +50,20 @@ func CreateAccount(c *gin.Context) {
 // @Param request query dto.UserProfileDTO true "admin account"
 // @Router /v1/api/user/profile [get]
 func GetUserProfile(c *gin.Context) {
-	profile := dto.UserProfileDTO{}
+	profile := &dto.UserProfileDTO{}
 	c.BindQuery(profile)
-	errmsg := validate.Validators(&profile)
+	errmsg := validate.Validators(profile)
 	if len(errmsg) != 0 {
-		// 处理错误
+		paramsError := internal.RequestParamsNotValidError
+		paramsError.ErrorMsg = errmsg
+		response.Error(c,paramsError)
+		return
 	}
 	user, err := service.GetUserProfile(profile.Email)
 	if err != nil {
 		response.Error(c,err)
 	}
-	response.Success(c, gin.H{"data": user}, "请求成功")
+	response.Success(c, gin.H{"data": user})
 }
 
 // Login 用户登录
@@ -73,4 +76,27 @@ func GetUserProfile(c *gin.Context) {
 // @Router /v1/api/user/login [post]
 func Login(c *gin.Context){
 
+}
+
+// Login 用户昵称检查
+// Login 
+// @Summary check user name
+// @Description 检查昵称
+// @Tags user
+// @Accept json
+// @Param request query dto.NickNameDTO true "the user account"
+// @Router /v1/api/user/name/check [get]
+func CheckNickName(c *gin.Context){
+	name := &dto.NickNameDTO{}
+	err := c.BindQuery(name)
+	if err != nil {
+		response.Error(c,internal.RequestParamsNotValidError)
+		return
+	}
+	err = service.CheckNickName(name.Name)
+	if err != nil {
+		response.Error(c,err)
+		return
+	}
+	response.Success(c,gin.H{})
 }
