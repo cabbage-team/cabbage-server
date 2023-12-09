@@ -47,9 +47,17 @@ func InitDB() *gorm.DB {
 }
 
 func initAutoMigrate(db *gorm.DB) {
-	_ = db.AutoMigrate(&model.User{})
-	_ = db.AutoMigrate(&model.Tag{})
-	_ = db.AutoMigrate(&model.UserTag{})
+	err := db.AutoMigrate(
+		&model.Comment{},
+		&model.CommentOperator{},
+		&model.Post{},
+		&model.PostOperator{},
+		&model.Tag{},
+		&model.User{},
+		&model.UserTag{},
+	)
+	if err != nil {
+	}
 }
 
 func GetDB() *gorm.DB {
