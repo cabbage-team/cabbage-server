@@ -9,7 +9,7 @@ import (
 
 type UserProfile struct {
 	*gorm.Model
-	UserId   uint   `json:"userId" gorm:"column:user_id,index"`
+	UserId   uint   `json:"userId" gorm:"column:user_id;index"`
 	Twitter  string `json:"twitter" gorm:"column:twitter"`
 	Mastodon string `json:"mastodon" gorm:"column:mastodon"`
 	Facebook string `json:"facebook" gorm:"column:facebook"`

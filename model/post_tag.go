@@ -7,8 +7,8 @@ import (
 )
 
 type PostTag struct {
-	PostId uint `json:"postID" gorm:"column:post_id,index"`
-	TagId  uint `json:"tagId" gorm:"column:post_id,index"`
+	PostId uint `json:"postID" gorm:"column:post_id;index"`
+	TagId  uint `json:"tagId" gorm:"column:post_id;index"`
 }
 
 func (PostTag) TableName() string {
