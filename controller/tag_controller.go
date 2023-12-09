@@ -19,7 +19,7 @@ import (
 func ReadTags(c *gin.Context) {
 	tags,err := service.ReadTags()
 	if err != nil {
-		response.Error(c)
+		response.Error(c,err)
 	}
 	response.Success(c, gin.H{"data": tags}, "请求成功")
 }
