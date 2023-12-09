@@ -83,4 +83,20 @@ func init() {
 		boot.Logger.Info("the user unfollow")
 
 	})
+
+	boot.Emit.On("user:createToken",func(args ...any) {
+
+	})
+
+	boot.Emit.On("user:loginFail",func(args ...any) {
+
+	})
+
+	boot.Emit.On("user:becomeDev",func(args ...any) {
+
+	})
+
+	boot.Emit.On("user:passwordIncrent",func(args ...any) {
+		
+	})
 }
