@@ -32,12 +32,16 @@ func InitRouter() *gin.Engine {
     CommentAPI.POST("reply",controller.CommentReply)
 	CommentAPI.POST("operator",controller.CommentOperator)
 	CommentAPI.DELETE("del",controller.CommentDelete)
+	CommentAPI.GET("view",controller.CommentView)
 	// post
 	PostAPI := v1Router.Group("post")
-	PostAPI.GET("create",controller.PostCreate)
+	PostAPI.POST("create",controller.PostCreate)
 	PostAPI.GET("search",controller.PostSearch)
-	PostAPI.GET("operater",controller.PostOperator)
+	PostAPI.POST("operater",controller.PostOperator)
 	PostAPI.DELETE("del",controller.PostDelete)
+
+	ProfileShare := v1Router.Group("bio")
+	ProfileShare.GET(":name",controller.ProfileSharre)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }
