@@ -49,6 +49,12 @@ var UserNotAuthorized = New(http.StatusUnauthorized, 4, "用户身份未验证")
 
 var UserExprieError = New(http.StatusUnauthorized, 5, "用户身份过期")
 
+var UserRegisterError = New(http.StatusBadRequest,8,"用户注册失败")
+
 var LimitPermissionError = New(http.StatusForbidden, 6, "权限受限,无法操作")
 
 var InernalError = New(http.StatusInternalServerError, 7, "服务器内部错误")
+
+var CommentError = New(http.StatusBadRequest,10,"comment error")
+var CommentNotFound = New(http.StatusNotFound,10,"comment not found")
+var CommentOperatorError = New(http.StatusBadRequest,11,"评论操作失败")
