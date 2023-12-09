@@ -7,12 +7,14 @@ import (
 	"cabbage-server/model"
 	"errors"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 // CreateAccount 创建新用户服务
 func CreateAccount(user *dto.SignupDTO) (*model.User, error) {
 	_user := &model.User{
+		UserId: uuid.New(),
 		Email:    user.Email,
 		Name:     user.Name,
 		Password: user.Password,
