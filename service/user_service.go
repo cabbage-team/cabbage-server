@@ -11,20 +11,39 @@ import (
 )
 
 // CreateAccount 创建新用户服务
-func CreateAccount(user *dto.SignupDTO) error {
-	err := dao.CreateAccount(&model.User{
+func CreateAccount(user *dto.SignupDTO) (*model.User, error) {
+	_user := &model.User{
 		Email:    user.Email,
 		Name:     user.Name,
 		Password: user.Password,
-	})
+	}
+	err := dao.CreateAccount(_user)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return internal.UserNotFoundError
+			return nil, internal.UserNotFoundError
 		} else {
-			return internal.InernalError
+			return nil, internal.UserRegisterError
 		}
 	}
-	return nil
+	_profile := &model.UserProfile{
+		UserId:   _user.ID,
+		Twitter:  "",
+		Mastodon: "",
+		Facebook: "",
+		Youtobe:  "",
+		Gmail:    "",
+		Github:   "",
+		Insgram:  "",
+		Telegram: "",
+	}
+	_, _err := dao.CreateProfile(_profile)
+	if _err != nil {
+		if !errors.Is(_err, gorm.ErrRecordNotFound) {
+			return nil, internal.InernalError
+		}
+		return nil, internal.UserRegisterError
+	}
+	return _user, nil
 }
 
 // GetUserProfile 获取用户信息服务
