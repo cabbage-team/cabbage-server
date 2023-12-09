@@ -45,7 +45,7 @@ definitions:
       email:
         type: string
       name:
-        minLength: 10
+        minLength: 4
         type: string
       password:
         minLength: 10
@@ -284,6 +284,21 @@ paths:
           $ref: '#/definitions/dto.LoginDTO'
       responses: {}
       summary: user login
+      tags:
+      - user
+  /v1/api/user/name/check:
+    get:
+      consumes:
+      - application/json
+      description: 检查昵称
+      parameters:
+      - in: query
+        minLength: 4
+        name: name
+        required: true
+        type: string
+      responses: {}
+      summary: check user name
       tags:
       - user
   /v1/api/user/profile:

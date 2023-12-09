@@ -307,6 +307,28 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/v1/api/user/name/check": {
+            "get": {
+                "description": "检查昵称",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "check user name",
+                "parameters": [
+                    {
+                        "minLength": 4,
+                        "type": "string",
+                        "name": "name",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/api/user/profile": {
             "get": {
                 "description": "获取用户信息",
@@ -401,7 +423,7 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string",
-                    "minLength": 10
+                    "minLength": 4
                 },
                 "password": {
                     "type": "string",
