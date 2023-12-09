@@ -2,9 +2,11 @@ package main
 
 import (
 	_ "cabbage-server/config"
+	_ "cabbage-server/events"
 	"cabbage-server/db"
 	"cabbage-server/router"
 	"fmt"
+
 	"github.com/spf13/viper"
 )
 
@@ -17,6 +19,6 @@ func main() {
 	// initialize service config
 	db.InitDB()
 	r := router.InitRouter()
-	port := fmt.Sprintf(":%s", viper.GetString("server.port"))
+	port := fmt.Sprintf(":%d", viper.GetInt("server.port"))
 	_ = r.Run(port)
 }
