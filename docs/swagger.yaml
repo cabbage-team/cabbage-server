@@ -1,6 +1,19 @@
 definitions:
+  dto.CommentDTO:
+    properties:
+      content:
+        minLength: 1
+        type: string
+      post:
+        type: integer
+    required:
+    - content
+    - post
+    type: object
   dto.CommentOperatorDTO:
     properties:
+      cid:
+        type: integer
       op:
         enum:
         - 1
@@ -10,6 +23,7 @@ definitions:
         - 16
         type: integer
     required:
+    - cid
     - op
     type: object
   dto.LoginDTO:
@@ -75,11 +89,33 @@ info:
   title: Cabbage server API
   version: "1.0"
 paths:
+  /v1/api/bio/{name}:
+    get:
+      consumes:
+      - application/json
+      description: 个人主页分享
+      parameters:
+      - description: the user name
+        in: path
+        name: name
+        required: true
+        type: string
+      responses: {}
+      summary: profile share
+      tags:
+      - post
   /v1/api/comment/create:
     post:
       consumes:
       - application/json
       description: 创建评论
+      parameters:
+      - description: comment content
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CommentDTO'
       responses: {}
       summary: create comment
       tags:
@@ -118,6 +154,15 @@ paths:
       summary: reply comment
       tags:
       - comment
+  /v1/api/comment/view:
+    get:
+      consumes:
+      - application/json
+      description: 查看评论
+      responses: {}
+      summary: get comment
+      tags:
+      - comment
   /v1/api/post/create:
     post:
       consumes:
@@ -146,7 +191,7 @@ paths:
       tags:
       - post
   /v1/api/post/search:
-    post:
+    get:
       consumes:
       - application/json
       description: 搜索帖子、文章
