@@ -8,9 +8,13 @@ import (
 
 func CreateComment(userid int64, comment *dto.CommentDTO) (*model.Comment, error) {
 	_comment := &model.Comment{
-		Content: comment.Content,
-		UserID:  userid,
-		PostId:  int64(comment.Post),
+		Content:  comment.Content,
+		UserID:   userid,
+		PostId:   int64(comment.Post),
+		Like:     0,
+		Diss:     0,
+		Favorite: 0,
+		Share:    0,
 	}
 	err := db.DB.Model(&model.Comment{}).Create(_comment).Error
 	if err != nil {
@@ -83,6 +87,16 @@ func FindCommentReply(parent int64, page int, size int) ([]*model.Comment, error
 
 }
 
+func UpdateComment(comment *model.Comment) error {
+	err := db.DB.Model(&model.Comment{}).
+		Save(comment).Error
+	if err != nil {
+		return err
+	} else {
+		return nil
+	}
+}
+
 func FindCommentByPost(postid int64) ([]*model.Comment, error) {
 	var commentList []*model.Comment
 	err := db.DB.Model(&model.Comment{}).Where("post_id = ?", postid).Find(commentList).Error
@@ -91,4 +105,43 @@ func FindCommentByPost(postid int64) ([]*model.Comment, error) {
 	} else {
 		return commentList, nil
 	}
+}
+
+func CreateCommentOperator(userid int64,cid int64, opcode int) (*model.CommentOperator,error) {
+	cmtOP := &model.CommentOperator{
+		CommentID: cid,
+		OPCode: opcode,
+	}
+	err := db.DB.Model(&model.CommentOperator{}).
+		Create(cmtOP).Error
+	if err != nil {
+		return nil,err
+	}
+	return cmtOP,nil
+}
+
+func CommentOperator(userid int64,cid int64, opcode int) (*model.CommentOperator, error) {
+	cmt, err := FindCommentById(cid)
+	if err != nil {
+		return nil, err
+	}
+	switch opcode {
+	case LIKE:
+		cmt.Like += 1
+	case DISS:
+		cmt.Diss += 1
+	case SHARE:
+		cmt.Share += 1
+	case FAVORITE:
+		cmt.Favorite += 1
+	}
+	err = UpdateComment(cmt)
+	if err != nil {
+		return nil,err
+	}
+	cmtOP,err := CreateCommentOperator(userid,cid,opcode)
+	if err != nil {
+		return nil, err
+	}
+	return cmtOP,nil
 }
