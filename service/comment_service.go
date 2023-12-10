@@ -41,6 +41,7 @@ func ReplyPostComment(userid int64, postid int64, commentid int64, content strin
 		return internal.CommentNotFound
 	}
 	comment.Parent = commentid
+	comment.Reply += 1
 	err = dao.UpdateComment(comment)
 	if err != nil {
 		return internal.RecordUpdateError
