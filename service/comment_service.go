@@ -10,7 +10,7 @@ import (
 )
 
 func CreatePostComment(userid int64, comment *dto.CommentDTO) error {
-	_, err := dao.CreateComment(userid, comment)
+	_, err := dao.CreateComment(userid, int64(comment.Post),comment.Content)
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return internal.RequestParamsNotValidError
