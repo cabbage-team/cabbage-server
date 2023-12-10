@@ -55,6 +55,7 @@ func initAutoMigrate(db *gorm.DB) {
 		&model.User{},
 		&model.UserTag{},
 		&model.UserProfile{},
+		&model.ProfilePlatform{},
 	)
 	if err != nil {
 	}
