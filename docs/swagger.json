@@ -8,6 +8,78 @@
     },
     "host": "localhost:8080",
     "paths": {
+        "/v1/api/admin/profile/platform/add": {
+            "post": {
+                "description": "添加新的社交平台",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "create new social platform",
+                "parameters": [
+                    {
+                        "description": "platforms",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AddPlatformDTO"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/api/admin/profile/platform/all": {
+            "get": {
+                "description": "查看所有社交平台",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "get all social platform",
+                "responses": {}
+            }
+        },
+        "/v1/api/admin/stat/count": {
+            "get": {
+                "description": "统计平台信息 今日新增贴子数 评论数 用户数  当月新增用户数 评论数 用户数",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "get stat data",
+                "parameters": [
+                    {
+                        "enum": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5,
+                            6,
+                            7,
+                            8,
+                            9,
+                            10,
+                            11,
+                            12
+                        ],
+                        "type": "integer",
+                        "name": "month",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/api/bio/{name}": {
             "get": {
                 "description": "个人主页分享",
@@ -344,6 +416,20 @@
         }
     },
     "definitions": {
+        "dto.AddPlatformDTO": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "dto.CommentDTO": {
             "type": "object",
             "required": [
