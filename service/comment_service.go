@@ -36,14 +36,14 @@ func ReplyPostComment(userid int64, postid int64, commentid int64, content strin
 	comment, err := dao.CreateComment(userid, postid, content)
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
-			return internal.RequestParamsNotValidError
+			return internal.RecordUpdateError
 		}
-		return internal.CommentError
+		return internal.CommentNotFound
 	}
 	comment.Parent = commentid
 	err = dao.UpdateComment(comment)
 	if err != nil {
-		return internal.CommentError
+		return internal.RecordUpdateError
 	}
 	return nil
 }
