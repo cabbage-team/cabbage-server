@@ -1,15 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
+ Source Server         : myMachine
  Source Server Type    : MySQL
  Source Server Version : 50736
+ Source Host           : 127.0.0.1:3308
  Source Schema         : cabbage
 
  Target Server Type    : MySQL
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 09/12/2023 20:59:14
+ Date: 10/12/2023 17:26:39
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +29,7 @@ CREATE TABLE `cabbage_comment`  (
   `user_id` bigint(20) NULL DEFAULT NULL,
   `post_id` bigint(20) NULL DEFAULT NULL,
   `parent` bigint(20) NULL DEFAULT NULL,
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `create_by` bigint(20) NULL DEFAULT NULL,
   `like` bigint(20) NULL DEFAULT NULL,
   `diss` bigint(20) NULL DEFAULT NULL,
@@ -140,17 +142,28 @@ CREATE TABLE `cabbage_user_profile`  (
   `updated_at` datetime(3) NULL DEFAULT NULL,
   `deleted_at` datetime(3) NULL DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED NULL DEFAULT NULL,
-  `twitter` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `mastodon` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `facebook` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `youtobe` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `gmail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `github` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `insgram` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
-  `telegram` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `platform` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `uri` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `only_self` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'N',
+  `only_friend` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'N',
+  `public` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'Y',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_cabbage_user_profile_deleted_at`(`deleted_at`) USING BTREE,
   INDEX `idx_cabbage_user_profile_user_id`(`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for cabbage_user_profile_platform
+-- ----------------------------
+DROP TABLE IF EXISTS `cabbage_user_profile_platform`;
+CREATE TABLE `cabbage_user_profile_platform`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) NULL DEFAULT NULL,
+  `updated_at` datetime(3) NULL DEFAULT NULL,
+  `deleted_at` datetime(3) NULL DEFAULT NULL,
+  `platform` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_cabbage_user_profile_platform_deleted_at`(`deleted_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
