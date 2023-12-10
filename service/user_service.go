@@ -14,7 +14,7 @@ import (
 // CreateAccount 创建新用户服务
 func CreateAccount(user *dto.SignupDTO) (*model.User, error) {
 	_user := &model.User{
-		UserId: uuid.New(),
+		UserId:   uuid.New(),
 		Email:    user.Email,
 		Name:     user.Name,
 		Password: user.Password,
@@ -27,23 +27,23 @@ func CreateAccount(user *dto.SignupDTO) (*model.User, error) {
 			return nil, internal.UserRegisterError
 		}
 	}
-	_profile := &model.UserProfile{
-		UserId:   _user.ID,
-		Twitter:  "",
-		Mastodon: "",
-		Facebook: "",
-		Youtobe:  "",
-		Gmail:    "",
-		Github:   "",
-		Insgram:  "",
-		Telegram: "",
-	}
-	_, _err := dao.CreateProfile(_profile)
-	if _err != nil {
-		if !errors.Is(_err, gorm.ErrRecordNotFound) {
-			return nil, internal.InernalError
-		}
+
+	list, err := dao.GetAllPlatform()
+	if err != nil {
 		return nil, internal.UserRegisterError
+	}
+	for _, platform := range list {
+		_, _err := dao.CreateProfile(&model.UserProfile{
+			UserId:   _user.ID,
+			Platform: platform,
+			URI:      "",
+		})
+		if _err != nil {
+			if !errors.Is(_err, gorm.ErrRecordNotFound) {
+				return nil, internal.InernalError
+			}
+			return nil, internal.UserRegisterError
+		}
 	}
 	return _user, nil
 }
@@ -81,7 +81,7 @@ func CheckNickName(name string) error {
 	return nil
 }
 
-func ProfileShare(user string) (*model.UserProfile, error) {
+func ProfileShare(user string) (map[string]string, error) {
 	_user, err := dao.FindUserByName(user)
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -96,5 +96,10 @@ func ProfileShare(user string) (*model.UserProfile, error) {
 		}
 		return nil, internal.RecordNotFoundError
 	}
-	return profile, nil
+	result := map[string]string{}
+	for _, val := range profile {
+		result[val.Platform] = val.URI
+	}
+
+	return result, nil
 }
