@@ -63,7 +63,7 @@ func CountNewUserOfMonth(month int) ([]*model.Counts, error) {
 
 func CountNewUserOfToday() (int64, error) {
 	var count int64
-	err := db.DB.Model(&model.Comment{}).
+	err := db.DB.Model(&model.User{}).
 		Where("DATE(created_at) = CURDATE()").
 		Count(&count).
 		Error

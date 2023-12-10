@@ -106,7 +106,7 @@ func CountNewPostOfMonth(month int) ([]*model.Counts, error) {
 	year, _, _ := timedate.Date()
 	dateString := strings.Join([]string{fmt.Sprintf("%d", year), fmt.Sprintf("%d", month), "01"}, "-")
 	nextMonth := strings.Join([]string{fmt.Sprintf("%d", year), fmt.Sprintf("%d", month+1), "01"}, "-")
-	err := db.DB.Model(&model.Comment{}).
+	err := db.DB.Model(&model.Post{}).
 		Select("DATE(created_at) as `date`", "count(*) as counts").
 		Where("created_at >= ? AND created_at < ?", dateString, nextMonth).
 		Order("DATE(created_at)").
