@@ -43,6 +43,18 @@ func InitRouter() *gin.Engine {
 
 	ProfileShare := v1Router.Group("bio")
 	ProfileShare.GET(":name",controller.ProfileSharre)
+
+
+	AdminAPI := v1Router.Group("admin")
+
+	AdminProfile := AdminAPI.Group("profile")
+
+	AdminProfile.POST("platform/add",controller.AddPlatform)
+	AdminProfile.GET("platform/all",controller.GetAllPlatform)
+
+	StatAPI := AdminAPI.Group("stat")
+
+	StatAPI.GET("count",controller.Count)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }
