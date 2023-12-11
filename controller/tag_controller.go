@@ -30,7 +30,7 @@ func ReadTags(c *gin.Context) {
 		response.Error(c,err)
 		return
 	}
-	response.Success(c, gin.H{"data": tags})
+	response.Success(c, tags)
 }
 
 // hide tag 
