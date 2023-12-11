@@ -2,6 +2,7 @@ package controller
 
 import (
 	"cabbage-server/dto"
+	"cabbage-server/internal"
 	"cabbage-server/response"
 	"cabbage-server/service"
 	"errors"
@@ -10,18 +11,26 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-// CreateAccount 
+// CreateAccount
 // @Summary get topic
 // @Description 获取话题列表
 // @Tags topic
+// @Param request query dto.PageDTO true "pagination params"
 // @Accept json
 // @Router /v1/api/tag/list [get]
 func ReadTags(c *gin.Context) {
-	tags,err := service.ReadTags()
+	page := &dto.PageDTO{}
+	err := c.BindQuery(page)
+	if err != nil {
+		response.Error(c,internal.RequestParamsNotValidError)
+		return
+	}
+	tags,err := service.ReadTags(page.Page,page.Size)
 	if err != nil {
 		response.Error(c,err)
+		return
 	}
-	response.Success(c, gin.H{"data": tags})
+	response.Success(c, tags)
 }
 
 // hide tag 

@@ -8,7 +8,7 @@ import (
 )
 
 type Tag struct {
-	gorm.Model
+	*gorm.Model
 	TagId       uuid.UUID `gorm:"type:binary(16);not null;comment:'uuid'" json:"tagId"`
 	TagName     string    `gorm:"type:varchar(20);not null;comment:'tag name'" json:"tagName"`
 	Description string    `gorm:"type:varchar(255);comment:'tag description'" json:"description"`

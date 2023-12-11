@@ -1,4 +1,13 @@
 definitions:
+  dto.AddPlatformDTO:
+    properties:
+      name:
+        items:
+          type: string
+        type: array
+    required:
+    - name
+    type: object
   dto.CommentDTO:
     properties:
       content:
@@ -89,6 +98,58 @@ info:
   title: Cabbage server API
   version: "1.0"
 paths:
+  /v1/api/admin/profile/platform/add:
+    post:
+      consumes:
+      - application/json
+      description: 添加新的社交平台
+      parameters:
+      - description: platforms
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddPlatformDTO'
+      responses: {}
+      summary: create new social platform
+      tags:
+      - admin
+  /v1/api/admin/profile/platform/all:
+    get:
+      consumes:
+      - application/json
+      description: 查看所有社交平台
+      responses: {}
+      summary: get all social platform
+      tags:
+      - admin
+  /v1/api/admin/stat/count:
+    get:
+      consumes:
+      - application/json
+      description: 统计平台信息 今日新增贴子数 评论数 用户数  当月新增用户数 评论数 用户数
+      parameters:
+      - enum:
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        in: query
+        name: month
+        required: true
+        type: integer
+      responses: {}
+      summary: get stat data
+      tags:
+      - admin
   /v1/api/bio/{name}:
     get:
       consumes:
@@ -234,6 +295,16 @@ paths:
       consumes:
       - application/json
       description: 获取话题列表
+      parameters:
+      - in: query
+        minimum: 1
+        name: page
+        type: integer
+      - in: query
+        maximum: 20
+        minimum: 1
+        name: size
+        type: integer
       responses: {}
       summary: get topic
       tags:

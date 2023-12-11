@@ -2,15 +2,17 @@ package dao
 
 import (
 	"cabbage-server/db"
-	"cabbage-server/dto"
 	"cabbage-server/model"
+	"fmt"
+	"strings"
+	"time"
 )
 
-func CreateComment(userid int64, comment *dto.CommentDTO) (*model.Comment, error) {
+func CreateComment(userid int64, postid int64, content string) (*model.Comment, error) {
 	_comment := &model.Comment{
-		Content:  comment.Content,
+		Content:  content,
 		UserID:   userid,
-		PostId:   int64(comment.Post),
+		PostID:   postid,
 		Like:     0,
 		Diss:     0,
 		Favorite: 0,
@@ -54,7 +56,11 @@ func CreateReplyComment(userid int64, commentid int64, content string) (*model.C
 
 func FindCommentById(commentid int64) (*model.Comment, error) {
 	comment := &model.Comment{}
-	err := db.DB.Model(&model.Comment{}).Where("id = ?").First(comment).Error
+	err := db.DB.Model(&model.Comment{}).
+		Omit("created_at", "deleted_at", "updated_at").
+		Where("id = ?").
+		First(comment).
+		Error
 	if err != nil {
 		return nil, err
 	} else {
@@ -74,6 +80,7 @@ func FindCommentReply(parent int64, page int, size int) ([]*model.Comment, error
 	}
 	err := db.DB.
 		Model(&model.Comment{}).
+		Omit("created_at", "deleted_at", "updated_at").
 		Where("parent = ?", parent).
 		Limit(size).
 		Offset((page - 1) * size).
@@ -99,7 +106,11 @@ func UpdateComment(comment *model.Comment) error {
 
 func FindCommentByPost(postid int64) ([]*model.Comment, error) {
 	var commentList []*model.Comment
-	err := db.DB.Model(&model.Comment{}).Where("post_id = ?", postid).Find(commentList).Error
+	err := db.DB.Model(&model.Comment{}).
+		Omit("created_at", "deleted_at", "updated_at").
+		Where("post_id = ?", postid).
+		Find(commentList).
+		Error
 	if err != nil {
 		return nil, err
 	} else {
@@ -107,20 +118,20 @@ func FindCommentByPost(postid int64) ([]*model.Comment, error) {
 	}
 }
 
-func CreateCommentOperator(userid int64,cid int64, opcode int) (*model.CommentOperator,error) {
+func CreateCommentOperator(userid int64, cid int64, opcode int) (*model.CommentOperator, error) {
 	cmtOP := &model.CommentOperator{
 		CommentID: cid,
-		OPCode: opcode,
+		OPCode:    opcode,
 	}
 	err := db.DB.Model(&model.CommentOperator{}).
 		Create(cmtOP).Error
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	return cmtOP,nil
+	return cmtOP, nil
 }
 
-func CommentOperator(userid int64,cid int64, opcode int) (*model.CommentOperator, error) {
+func CommentOperator(userid int64, cid int64, opcode int) (*model.CommentOperator, error) {
 	cmt, err := FindCommentById(cid)
 	if err != nil {
 		return nil, err
@@ -137,11 +148,42 @@ func CommentOperator(userid int64,cid int64, opcode int) (*model.CommentOperator
 	}
 	err = UpdateComment(cmt)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	cmtOP,err := CreateCommentOperator(userid,cid,opcode)
+	cmtOP, err := CreateCommentOperator(userid, cid, opcode)
 	if err != nil {
 		return nil, err
 	}
-	return cmtOP,nil
+	return cmtOP, nil
+}
+
+func CountNewCommentOfMonth(month int) ([]*model.Counts, error) {
+	timedate := time.Now()
+	var results []*model.Counts
+	year, _, _ := timedate.Date()
+	dateString := strings.Join([]string{fmt.Sprintf("%d", year), fmt.Sprintf("%d", month), "01"}, "-")
+	nextMonth := strings.Join([]string{fmt.Sprintf("%d", year), fmt.Sprintf("%d", month+1), "01"}, "-")
+	err := db.DB.Model(&model.Comment{}).
+		Select("DATE(created_at) as `date`", "count(*) as counts").
+		Where("created_at >= ? AND created_at < ?", dateString, nextMonth).
+		Order("DATE(created_at)").
+		Group("DATE(created_at)").
+		Find(&results).Error
+	if err != nil {
+		return nil, err
+	} else {
+		return results, nil
+	}
+}
+
+func CountNewCommentOfToday() (int64, error) {
+	var count int64
+	err := db.DB.Model(&model.Comment{}).
+		Where("DATE(created_at) = CURDATE()").
+		Count(&count).
+		Error
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
 }

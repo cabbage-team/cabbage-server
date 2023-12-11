@@ -7,7 +7,7 @@ import (
 )
 
 // Response 响应信息
-func Response(ctx *gin.Context, httpStatus int, code int, data gin.H, msg string) {
+func Response(ctx *gin.Context, httpStatus int, code int, data any, msg string) {
 	ctx.JSON(httpStatus, gin.H{
 		"code": code,
 		"data": data,
@@ -16,7 +16,7 @@ func Response(ctx *gin.Context, httpStatus int, code int, data gin.H, msg string
 }
 
 // Success 成功响应信息
-func Success(ctx *gin.Context, data gin.H) {
+func Success(ctx *gin.Context, data any) {
 	Response(ctx, http.StatusOK, 0, data, "OK")
 }
 

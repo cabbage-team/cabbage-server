@@ -10,14 +10,11 @@ import (
 type UserProfile struct {
 	*gorm.Model
 	UserId   uint   `json:"userId" gorm:"column:user_id;index"`
-	Twitter  string `json:"twitter" gorm:"column:twitter"`
-	Mastodon string `json:"mastodon" gorm:"column:mastodon"`
-	Facebook string `json:"facebook" gorm:"column:facebook"`
-	Youtobe  string `json:"youtobe" gorm:"column:youtobe"`
-	Gmail    string `json:"gmail" gorm:"column:gmail"`
-	Github   string `json:"github" gorm:"column:github"`
-	Insgram  string `json:"insgram" gorm:"column:insgram"`
-	Telegram string `json:"telegram" gorm:"column:telegram"`
+	Platform string `json:"platform" gorm:"column:platform"`
+	URI string `json:"uri" gorm:"column:uri"`
+	OnlySelf string `json:"self" gorm:"column:only_self;type:enum('Y','N');default:'N'"`
+	OnlyFriend string `json:"friend" gorm:"column:only_friend;type:enum('Y','N');default:'N'"`
+	Public string `json:"public" gorm:"column:public;type:enum('Y','N');default:'Y'"`
 }
 
 

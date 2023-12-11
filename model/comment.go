@@ -10,9 +10,10 @@ import (
 type Comment struct {
 	*gorm.Model
 	UserID   int64  `json:"userId" gorm:"column:user_id"`
-	PostId   int64  `json:"postId" gorm:"column:post_id;index"`
+	PostID   int64  `json:"postId" gorm:"column:post_id;index"`
 	Parent   int64  `json:"parent" gorm:"column:parent;index"`
 	Content  string `json:"content" gorm:"column:content"`
+	Reply    int64  `json:"reply" gorm:"column:reply"`
 	CreateBy int64  `json:"createBy" gorm:"column:create_by"`
 	Like     int64  `json:"like" gorm:"column:like"`
 	Diss     int64  `json:"diss" gorm:"column:diss"`

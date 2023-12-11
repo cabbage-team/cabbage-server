@@ -4,11 +4,13 @@ import (
 	"fmt"
 
 	"github.com/spf13/viper"
+	"gorm.io/gorm"
 )
 
 type PostTag struct {
-	PostId uint `json:"postID" gorm:"column:post_id;index"`
-	TagId  uint `json:"tagId" gorm:"column:post_id;index"`
+	*gorm.Model
+	PostId int64 `json:"postID" gorm:"column:post_id;index"`
+	TagId  int64 `json:"tagId" gorm:"column:tag_id;index"`
 }
 
 func (PostTag) TableName() string {

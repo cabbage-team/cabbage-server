@@ -4,6 +4,9 @@ import (
 	"cabbage-server/db"
 	"cabbage-server/dto"
 	"cabbage-server/model"
+	"fmt"
+	"strings"
+	"time"
 )
 
 const (
@@ -47,6 +50,7 @@ func FindPostById(pid int64) (*model.Post, error) {
 	post := &model.Post{}
 	err := db.DB.
 		Model(&model.Post{}).
+		Omit("created_at", "deleted_at", "updated_at").
 		Where("id = ?", pid).
 		First(post).
 		Error
@@ -56,6 +60,33 @@ func FindPostById(pid int64) (*model.Post, error) {
 		return post, nil
 	}
 }
+
+func FindPostByTag(tags ...int) ([]*model.Post, error) {
+	postIds := []int64{}
+	err := db.DB.
+		Model(&model.PostTag{}).
+		Omit("created_at", "deleted_at", "updated_at").
+		Select("post_id").
+		Where("tag_id in (?)", tags).
+		First(&postIds).
+		Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	post := []*model.Post{}
+	err = db.DB.
+		Model(&model.Post{}).
+		Omit("created_at", "deleted_at", "updated_at").
+		Where("id in (?)", postIds).
+		Find(&post).Error
+	if err != nil {
+		return nil, err
+	}
+	return post, nil
+}
+
 
 func OperatorPost(postid int64, userid int64, opcode int) error {
 	post, err := FindPostById(postid)
@@ -95,4 +126,35 @@ func CreatePostOperator(uid int64, postid int64, opcode int) (*model.PostOperato
 	} else {
 		return &CO, nil
 	}
+}
+
+func CountNewPostOfMonth(month int) ([]*model.Counts, error) {
+	timedate := time.Now()
+	var results []*model.Counts
+	year, _, _ := timedate.Date()
+	dateString := strings.Join([]string{fmt.Sprintf("%d", year), fmt.Sprintf("%d", month), "01"}, "-")
+	nextMonth := strings.Join([]string{fmt.Sprintf("%d", year), fmt.Sprintf("%d", month+1), "01"}, "-")
+	err := db.DB.Model(&model.Post{}).
+		Select("DATE(created_at) as `date`", "count(*) as counts").
+		Where("created_at >= ? AND created_at < ?", dateString, nextMonth).
+		Order("DATE(created_at)").
+		Group("date(created_at)").
+		Find(&results).Error
+	if err != nil {
+		return nil, err
+	} else {
+		return results, nil
+	}
+}
+
+func CountNewPostOfToday() (int64, error) {
+	var count int64
+	err := db.DB.Model(&model.Post{}).
+		Where("DATE(created_at) = CURDATE()").
+		Count(&count).
+		Error
+	if err != nil {
+		return -1, err
+	}
+	return count, nil
 }
