@@ -8,9 +8,14 @@ import (
 	"time"
 )
 
-func ReadTags() (*[]model.Tag, error) {
+func ReadTags(page, size int) (*[]model.Tag, error) {
 	var tags []model.Tag
-	err := db.DB.Model(&model.Tag{}).Find(&tags).Error
+	err := db.DB.
+		Model(&model.Tag{}).
+		Limit(size).
+		Offset((page - 1) * size).
+		Find(&tags).
+		Error
 	if err != nil {
 		return nil, err
 	} else {
