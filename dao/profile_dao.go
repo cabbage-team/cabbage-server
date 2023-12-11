@@ -17,6 +17,7 @@ func CreateProfile(profile *model.UserProfile) (*model.UserProfile, error) {
 func FindProfileByUID(uid int64) ([]*model.UserProfile, error) {
 	profile := []*model.UserProfile{}
 	err := db.DB.Model(&model.UserProfile{}).
+	Omit("created_at","deleted_at","updated_at").
 		Where("user_id = ?", uid).
 		Find(&profile).
 		Error
