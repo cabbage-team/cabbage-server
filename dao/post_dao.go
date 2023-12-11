@@ -50,6 +50,7 @@ func FindPostById(pid int64) (*model.Post, error) {
 	post := &model.Post{}
 	err := db.DB.
 		Model(&model.Post{}).
+		Omit("created_at", "deleted_at", "updated_at").
 		Where("id = ?", pid).
 		First(post).
 		Error
@@ -59,6 +60,45 @@ func FindPostById(pid int64) (*model.Post, error) {
 		return post, nil
 	}
 }
+
+func FindPostByTag(tags ...int) ([]*model.Post, error) {
+	postIds := []int64{}
+	err := db.DB.
+		Model(&model.PostTag{}).
+		Select("post_id").
+		Where("tag_id in (?)", tags).
+		First(&postIds).
+		Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	post := []*model.Post{}
+	err = db.DB.
+		Model(&model.Post{}).
+		Omit("created_at", "deleted_at", "updated_at").
+		Where("id in (?)", postIds).
+		Find(&post).Error
+	if err != nil {
+		return nil, err
+	}
+	return post, nil
+}
+
+func GetPostTags(postid int) ([]string,error){
+	tagIds := []int64{}
+	err := db.DB.Model(&model.PostTag{}).
+	Select("tag_id").
+	Where("post_id = ?",postid).
+	Find(&tagIds).
+	Error
+	if err != nil {
+		return nil,err
+	}
+
+}
+
 
 func OperatorPost(postid int64, userid int64, opcode int) error {
 	post, err := FindPostById(postid)
