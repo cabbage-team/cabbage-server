@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 10/12/2023 17:26:39
+ Date: 11/12/2023 10:32:50
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,8 @@ CREATE TABLE `cabbage_comment`  (
   `user_id` bigint(20) NULL DEFAULT NULL,
   `post_id` bigint(20) NULL DEFAULT NULL,
   `parent` bigint(20) NULL DEFAULT NULL,
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+  `reply` bigint(20) NULL DEFAULT NULL,
   `create_by` bigint(20) NULL DEFAULT NULL,
   `like` bigint(20) NULL DEFAULT NULL,
   `diss` bigint(20) NULL DEFAULT NULL,
@@ -54,9 +55,9 @@ CREATE TABLE `cabbage_comment_operator`  (
   `comment_id` bigint(20) NULL DEFAULT NULL,
   `op_code` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_cabbage_comment_operator_deleted_at`(`deleted_at`) USING BTREE,
   INDEX `idx_cabbage_comment_operator_user_id`(`user_id`) USING BTREE,
-  INDEX `idx_cabbage_comment_operator_comment_id`(`comment_id`) USING BTREE
+  INDEX `idx_cabbage_comment_operator_comment_id`(`comment_id`) USING BTREE,
+  INDEX `idx_cabbage_comment_operator_deleted_at`(`deleted_at`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -95,6 +96,23 @@ CREATE TABLE `cabbage_post_operator`  (
   INDEX `idx_cabbage_post_operator_deleted_at`(`deleted_at`) USING BTREE,
   INDEX `idx_cabbage_post_operator_user_id`(`user_id`) USING BTREE,
   INDEX `idx_cabbage_post_operator_post_id`(`post_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for cabbage_post_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `cabbage_post_tag`;
+CREATE TABLE `cabbage_post_tag`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) NULL DEFAULT NULL,
+  `updated_at` datetime(3) NULL DEFAULT NULL,
+  `deleted_at` datetime(3) NULL DEFAULT NULL,
+  `post_id` bigint(20) NULL DEFAULT NULL,
+  `tag_id` bigint(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_cabbage_post_tag_deleted_at`(`deleted_at`) USING BTREE,
+  INDEX `idx_cabbage_post_tag_post_id`(`post_id`) USING BTREE,
+  INDEX `idx_cabbage_post_tag_tag_id`(`tag_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
