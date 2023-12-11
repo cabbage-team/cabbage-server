@@ -60,6 +60,15 @@ var UserRegisterError = New(http.StatusBadRequest, 8, "用户注册失败")
 var UserAlreadyExists = New(http.StatusBadRequest, 12, "用户已经存在")
 
 // 
+var UserLoginFail = New(http.StatusBadRequest,33,"用户登录失败")
+
+// 
+var UserNotExistsErr = New(http.StatusBadRequest,44,"用户不存在")
+
+// 
+var UserPasswordNotCorrectErr = New(http.StatusBadRequest,55,"用户密码错误")
+
+// 
 var LimitPermissionError = New(http.StatusForbidden, 6, "权限受限,无法操作")
 
 // 

@@ -6,10 +6,18 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // CreateAccount 创建用户数据库操作
-func CreateAccount(user *model.User) error {
+func CreateAccount(username, password string, email string) error {
+	user := &model.User{
+		UserId:   uuid.New(),
+		Name:     username,
+		Password: password,
+		Email:    email,
+	}
 	err := db.DB.Model(&model.User{}).Create(user).Error
 	if err != nil {
 		return err
