@@ -86,19 +86,6 @@ func FindPostByTag(tags ...int) ([]*model.Post, error) {
 	return post, nil
 }
 
-func GetPostTags(postid int) ([]string,error){
-	tagIds := []int64{}
-	err := db.DB.Model(&model.PostTag{}).
-	Select("tag_id").
-	Where("post_id = ?",postid).
-	Find(&tagIds).
-	Error
-	if err != nil {
-		return nil,err
-	}
-
-}
-
 
 func OperatorPost(postid int64, userid int64, opcode int) error {
 	post, err := FindPostById(postid)
