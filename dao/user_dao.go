@@ -26,7 +26,7 @@ func CreateAccount(username, password string, email string) error {
 	}
 }
 
-// GetUserProfile 获取用户信息数据库操作
+// 根据邮箱查找用户
 func FindUserByEmail(email string) (*model.User, error) {
 	user := &model.User{}
 	err := db.DB.Model(&model.User{}).Where("email = ?", email).First(user).Error
@@ -37,6 +37,7 @@ func FindUserByEmail(email string) (*model.User, error) {
 	}
 }
 
+// 根据用户名查找
 func FindUserByName(name string) (*model.User, error) {
 	user := &model.User{}
 	err := db.DB.Model(&model.User{}).
@@ -50,6 +51,7 @@ func FindUserByName(name string) (*model.User, error) {
 	}
 }
 
+// 根据用户名模糊查找
 func FuzzyMatchingByUserName(name string) ([]*model.User, error) {
 	users := []*model.User{}
 	err := db.DB.Model(&model.User{}).
@@ -62,6 +64,7 @@ func FuzzyMatchingByUserName(name string) ([]*model.User, error) {
 	return users, nil
 }
 
+// 统计某月新增用户
 func CountNewUserOfMonth(month int) ([]*model.Counts, error) {
 	timedate := time.Now()
 	var results []*model.Counts
@@ -81,6 +84,7 @@ func CountNewUserOfMonth(month int) ([]*model.Counts, error) {
 	}
 }
 
+// 统计当天新增用户数
 func CountNewUserOfToday() (int64, error) {
 	var count int64
 	err := db.DB.Model(&model.User{}).
