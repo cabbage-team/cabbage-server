@@ -2,6 +2,7 @@ package model
 
 import "gorm.io/gorm"
 
+// UID -> Follow : Ship
 type UserFollows struct {
 	*gorm.Model
 	// 用户id
