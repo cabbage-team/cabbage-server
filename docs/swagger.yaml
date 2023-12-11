@@ -295,6 +295,16 @@ paths:
       consumes:
       - application/json
       description: 获取话题列表
+      parameters:
+      - in: query
+        minimum: 1
+        name: page
+        type: integer
+      - in: query
+        maximum: 20
+        minimum: 1
+        name: size
+        type: integer
       responses: {}
       summary: get topic
       tags:

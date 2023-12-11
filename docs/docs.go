@@ -304,6 +304,21 @@ const docTemplate = `{
                     "topic"
                 ],
                 "summary": "get topic",
+                "parameters": [
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 20,
+                        "minimum": 1,
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
                 "responses": {}
             }
         },

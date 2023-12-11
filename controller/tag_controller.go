@@ -15,6 +15,7 @@ import (
 // @Summary get topic
 // @Description 获取话题列表
 // @Tags topic
+// @Param request query dto.PageDTO true "pagination params"
 // @Accept json
 // @Router /v1/api/tag/list [get]
 func ReadTags(c *gin.Context) {
