@@ -12,7 +12,7 @@ func CreateComment(userid int64, postid int64, content string) (*model.Comment, 
 	_comment := &model.Comment{
 		Content:  content,
 		UserID:   userid,
-		PostId:   postid,
+		PostID:   postid,
 		Like:     0,
 		Diss:     0,
 		Favorite: 0,
@@ -56,7 +56,11 @@ func CreateReplyComment(userid int64, commentid int64, content string) (*model.C
 
 func FindCommentById(commentid int64) (*model.Comment, error) {
 	comment := &model.Comment{}
-	err := db.DB.Model(&model.Comment{}).Where("id = ?").First(comment).Error
+	err := db.DB.Model(&model.Comment{}).
+		Omit("created_at", "deleted_at", "updated_at").
+		Where("id = ?").
+		First(comment).
+		Error
 	if err != nil {
 		return nil, err
 	} else {
@@ -76,6 +80,7 @@ func FindCommentReply(parent int64, page int, size int) ([]*model.Comment, error
 	}
 	err := db.DB.
 		Model(&model.Comment{}).
+		Omit("created_at", "deleted_at", "updated_at").
 		Where("parent = ?", parent).
 		Limit(size).
 		Offset((page - 1) * size).
@@ -101,7 +106,11 @@ func UpdateComment(comment *model.Comment) error {
 
 func FindCommentByPost(postid int64) ([]*model.Comment, error) {
 	var commentList []*model.Comment
-	err := db.DB.Model(&model.Comment{}).Where("post_id = ?", postid).Find(commentList).Error
+	err := db.DB.Model(&model.Comment{}).
+		Omit("created_at", "deleted_at", "updated_at").
+		Where("post_id = ?", postid).
+		Find(commentList).
+		Error
 	if err != nil {
 		return nil, err
 	} else {
