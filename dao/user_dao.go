@@ -50,6 +50,18 @@ func FindUserByName(name string) (*model.User, error) {
 	}
 }
 
+func FuzzyMatchingByUserName(name string) ([]*model.User, error) {
+	users := []*model.User{}
+	err := db.DB.Model(&model.User{}).
+		Where("name like ?", "%"+name+"%").
+		Find(&users).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
 func CountNewUserOfMonth(month int) ([]*model.Counts, error) {
 	timedate := time.Now()
 	var results []*model.Counts
