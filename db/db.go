@@ -51,6 +51,7 @@ func initAutoMigrate(db *gorm.DB) {
 		&model.CommentOperator{},
 		&model.Post{},
 		&model.PostOperator{},
+		&model.PostTag{},
 		&model.Tag{},
 		&model.User{},
 		&model.UserTag{},
