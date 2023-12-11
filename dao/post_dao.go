@@ -65,6 +65,7 @@ func FindPostByTag(tags ...int) ([]*model.Post, error) {
 	postIds := []int64{}
 	err := db.DB.
 		Model(&model.PostTag{}).
+		Omit("created_at", "deleted_at", "updated_at").
 		Select("post_id").
 		Where("tag_id in (?)", tags).
 		First(&postIds).
