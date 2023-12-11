@@ -18,6 +18,19 @@ func ReadTags() (*[]model.Tag, error) {
 	}
 }
 
+func FindTagByIds(tags ...int64) ([]*model.Tag, error) {
+	_tags := []*model.Tag{}
+	err := db.DB.Model(&model.Tag{}).
+		Omit("created_at", "deleted_at", "updated_at").
+		Where("id in (?)", tags).
+		Find(&_tags).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	return _tags, nil
+}
+
 func CountNewTagOfMonth(month int) ([]*model.Counts, error) {
 	timedate := time.Now()
 	var results []*model.Counts
