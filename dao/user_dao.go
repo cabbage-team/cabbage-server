@@ -11,7 +11,7 @@ import (
 )
 
 // CreateAccount 创建用户数据库操作
-func CreateAccount(username, password string, email string) error {
+func CreateAccount(username, password string, email string) (*model.User, error) {
 	user := &model.User{
 		UserId:   uuid.New(),
 		Name:     username,
@@ -20,9 +20,9 @@ func CreateAccount(username, password string, email string) error {
 	}
 	err := db.DB.Model(&model.User{}).Create(user).Error
 	if err != nil {
-		return err
+		return nil,err
 	} else {
-		return nil
+		return user,nil
 	}
 }
 
