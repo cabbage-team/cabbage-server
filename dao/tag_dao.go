@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// 分页读取话题标签
 func ReadTags(page, size int) (*[]model.Tag, error) {
 	var tags []model.Tag
 	err := db.DB.
@@ -23,6 +24,7 @@ func ReadTags(page, size int) (*[]model.Tag, error) {
 	}
 }
 
+// 查找指定 id的话题
 func FindTagByIds(tags ...int64) ([]*model.Tag, error) {
 	_tags := []*model.Tag{}
 	err := db.DB.Model(&model.Tag{}).
@@ -36,6 +38,7 @@ func FindTagByIds(tags ...int64) ([]*model.Tag, error) {
 	return _tags, nil
 }
 
+// 统计某月新增话题数
 func CountNewTagOfMonth(month int) ([]*model.Counts, error) {
 	timedate := time.Now()
 	var results []*model.Counts
@@ -54,7 +57,7 @@ func CountNewTagOfMonth(month int) ([]*model.Counts, error) {
 		return results, nil
 	}
 }
-
+// 统计当天新增话题数
 func CountNewTagOfToday() (int64, error) {
 	var count int64
 	err := db.DB.Model(&model.Tag{}).

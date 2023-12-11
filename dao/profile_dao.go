@@ -14,6 +14,7 @@ func CreateProfile(profile *model.UserProfile) (*model.UserProfile, error) {
 	}
 }
 
+// 根据用户id查询 用户设置
 func FindProfileByUID(uid int64) ([]*model.UserProfile, error) {
 	profile := []*model.UserProfile{}
 	err := db.DB.Model(&model.UserProfile{}).
@@ -28,6 +29,7 @@ func FindProfileByUID(uid int64) ([]*model.UserProfile, error) {
 	}
 }
 
+// 根据用户id 和平台名称查找用户的社交平台链接
 func FindSocials(uid int64, names []string) ([]*model.UserProfile, error) {
 	socials := []*model.UserProfile{}
 	err := db.DB.Model(&model.UserProfile{}).
@@ -42,6 +44,7 @@ func FindSocials(uid int64, names []string) ([]*model.UserProfile, error) {
 	}
 }
 
+// 好友视角查看社交平台链接
 func FriendVisitProfile() ([]*model.UserProfile, error) {
 	socials := []*model.UserProfile{}
 	err := db.DB.Model(&model.UserProfile{}).

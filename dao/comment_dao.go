@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// 创建评论
 func CreateComment(userid int64, postid int64, content string) (*model.Comment, error) {
 	_comment := &model.Comment{
 		Content:  content,
@@ -26,6 +27,7 @@ func CreateComment(userid int64, postid int64, content string) (*model.Comment, 
 	}
 }
 
+// 根据评论id删除评论
 func DeleteComment(commentId int64) error {
 	comment, err := FindCommentById(commentId)
 	if err != nil {
@@ -40,6 +42,7 @@ func DeleteComment(commentId int64) error {
 	}
 }
 
+// 回复评论
 func CreateReplyComment(userid int64, commentid int64, content string) (*model.Comment, error) {
 	comment := &model.Comment{
 		UserID:  userid,
@@ -54,6 +57,7 @@ func CreateReplyComment(userid int64, commentid int64, content string) (*model.C
 	}
 }
 
+// 查找指定id的评论
 func FindCommentById(commentid int64) (*model.Comment, error) {
 	comment := &model.Comment{}
 	err := db.DB.Model(&model.Comment{}).
@@ -68,6 +72,7 @@ func FindCommentById(commentid int64) (*model.Comment, error) {
 	}
 }
 
+// 分页查找指定id评论的回复评论
 func FindCommentReply(parent int64, page int, size int) ([]*model.Comment, error) {
 	var replyList []*model.Comment
 	if page <= 0 {
@@ -94,6 +99,7 @@ func FindCommentReply(parent int64, page int, size int) ([]*model.Comment, error
 
 }
 
+// 更新评论
 func UpdateComment(comment *model.Comment) error {
 	err := db.DB.Model(&model.Comment{}).
 		Save(comment).Error
@@ -104,11 +110,14 @@ func UpdateComment(comment *model.Comment) error {
 	}
 }
 
-func FindCommentByPost(postid int64) ([]*model.Comment, error) {
+// 分页查找帖子的评论
+func FindCommentByPost(postid int64, page, size int) ([]*model.Comment, error) {
 	var commentList []*model.Comment
 	err := db.DB.Model(&model.Comment{}).
 		Omit("created_at", "deleted_at", "updated_at").
 		Where("post_id = ?", postid).
+		Limit(size).
+		Offset((page - 1) * size).
 		Find(commentList).
 		Error
 	if err != nil {
@@ -118,6 +127,7 @@ func FindCommentByPost(postid int64) ([]*model.Comment, error) {
 	}
 }
 
+// 创建评论操作记录
 func CreateCommentOperator(userid int64, cid int64, opcode int) (*model.CommentOperator, error) {
 	cmtOP := &model.CommentOperator{
 		CommentID: cid,
@@ -131,6 +141,7 @@ func CreateCommentOperator(userid int64, cid int64, opcode int) (*model.CommentO
 	return cmtOP, nil
 }
 
+// 对指定评论进行 点赞 踩 分享 收藏 等操作
 func CommentOperator(userid int64, cid int64, opcode int) (*model.CommentOperator, error) {
 	cmt, err := FindCommentById(cid)
 	if err != nil {
@@ -157,6 +168,7 @@ func CommentOperator(userid int64, cid int64, opcode int) (*model.CommentOperato
 	return cmtOP, nil
 }
 
+// 统计某月新增评论数
 func CountNewCommentOfMonth(month int) ([]*model.Counts, error) {
 	timedate := time.Now()
 	var results []*model.Counts
@@ -176,6 +188,7 @@ func CountNewCommentOfMonth(month int) ([]*model.Counts, error) {
 	}
 }
 
+// 统计当天评论数
 func CountNewCommentOfToday() (int64, error) {
 	var count int64
 	err := db.DB.Model(&model.Comment{}).
