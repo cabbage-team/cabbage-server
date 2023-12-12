@@ -11,7 +11,7 @@
  Target Server Version : 50736
  File Encoding         : 65001
 
- Date: 11/12/2023 10:32:50
+ Date: 12/12/2023 13:55:11
 */
 
 SET NAMES utf8mb4;
@@ -55,9 +55,9 @@ CREATE TABLE `cabbage_comment_operator`  (
   `comment_id` bigint(20) NULL DEFAULT NULL,
   `op_code` bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_cabbage_comment_operator_deleted_at`(`deleted_at`) USING BTREE,
   INDEX `idx_cabbage_comment_operator_user_id`(`user_id`) USING BTREE,
-  INDEX `idx_cabbage_comment_operator_comment_id`(`comment_id`) USING BTREE,
-  INDEX `idx_cabbage_comment_operator_deleted_at`(`deleted_at`) USING BTREE
+  INDEX `idx_cabbage_comment_operator_comment_id`(`comment_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -148,6 +148,24 @@ CREATE TABLE `cabbage_user`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `email`(`email`) USING BTREE,
   INDEX `idx_cabbage_user_deleted_at`(`deleted_at`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for cabbage_user_follows
+-- ----------------------------
+DROP TABLE IF EXISTS `cabbage_user_follows`;
+CREATE TABLE `cabbage_user_follows`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) NULL DEFAULT NULL,
+  `updated_at` datetime(3) NULL DEFAULT NULL,
+  `deleted_at` datetime(3) NULL DEFAULT NULL,
+  `uid` bigint(20) NULL DEFAULT NULL,
+  `follower` bigint(20) NULL DEFAULT NULL,
+  `ship` enum('F','N','D') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'D',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `follow`(`follower`) USING BTREE,
+  INDEX `idx_cabbage_user_follows_deleted_at`(`deleted_at`) USING BTREE,
+  INDEX `idx_cabbage_user_follows_uid`(`uid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
