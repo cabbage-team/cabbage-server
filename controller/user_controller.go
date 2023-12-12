@@ -110,7 +110,7 @@ func CheckNickName(c *gin.Context) {
 // @Accept json
 // @Router /v1/api/user/follows [get]
 func UserFollows(c *gin.Context) {
-	params := &dto.FollowList{}
+	params := &dto.FollowListDTO{}
 	err := c.BindQuery(params)
 	if err != nil {
 		response.Error(c, internal.RequestParamsNotValidError)
@@ -140,7 +140,7 @@ func UserFollows(c *gin.Context) {
 // @Accept json
 // @Router /v1/api/user/blacklist [get]
 func UserBlackList(c *gin.Context) {
-	params := &dto.FollowList{}
+	params := &dto.FollowListDTO{}
 	err := c.BindQuery(params)
 	if err != nil {
 		response.Error(c, internal.RequestParamsNotValidError)
