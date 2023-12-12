@@ -1,6 +1,11 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"fmt"
+
+	"github.com/spf13/viper"
+	"gorm.io/gorm"
+)
 
 // UID -> Follow : Ship
 type UserFollows struct {
@@ -11,4 +16,8 @@ type UserFollows struct {
 	Follow int64 `json:"follower" gorm:"column:follower;index"`
 	// 关系 -1 拉黑 0 正常 1 关注
 	Ship     int   `json:"ship" gorm:"column:ship;type:enum(-1,0,1);default:0"`
+}
+
+func (UserFollows) TableName() string {
+	return fmt.Sprintf("%suser_follows", viper.GetString("datasource.tableprefix"))
 }
