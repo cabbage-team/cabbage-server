@@ -19,3 +19,9 @@ type UserProfileDTO struct {
 type NickNameDTO struct {
 	Name string `json:"name" form:"name" validate:"min=4,required" validateMsg:"the user name minimum 10 characters required"`
 }
+
+type FollowListDTO struct {
+	Page int `json:"page" form:"page" validate:"min=1" validateMsg:"the minimum number of pages is 1"`
+	Size int `json:"size" form:"size" validate:"min=1,max=20" validateMsg:"the size out of range, must between 1 and 20"`
+	UID int64 `json:"uid" form:"uid" validate:"min=1" validateMsg:"the minimum number of uid is 1"`
+}
