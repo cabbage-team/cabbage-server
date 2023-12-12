@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 // CreateAccount 创建用户数据库操作
@@ -53,9 +54,20 @@ func FindUserByName(name string) (*model.User, error) {
 
 func getUserRelationshipList(userid int64, page, size int, ship int) ([]*model.User, error) {
 	result := []*model.User{}
+	_ship := ""
+	switch ship {
+	case -1:
+		_ship = "N"
+	case 0:
+		_ship = "D"
+	case 1:
+		_ship = "F"
+	default:
+		return nil,gorm.ErrRecordNotFound
+	}
 	expression := db.DB.Model(&model.UserFollows{}).
 		Select("uid").
-		Where("ship = ?", ship).
+		Where("ship = ?", _ship).
 		Where("uid = ?", userid)
 	err := db.DB.Model(&model.User{}).
 		Where("user in (?)", expression).
