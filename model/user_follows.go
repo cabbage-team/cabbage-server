@@ -15,7 +15,7 @@ type UserFollows struct {
 	// 目标用户id
 	Follow int64 `json:"follower" gorm:"index:follow;column:follower"`
 	// 关系 -1 拉黑 0 正常 1 关注
-	Ship string `json:"ship" gorm:"column:ship;type:enum('F','N','D');default:0"`
+	Ship string `json:"ship" gorm:"column:ship;type:enum('F','N','D');default:'D'"`
 }
 
 func (UserFollows) TableName() string {
