@@ -20,9 +20,9 @@ func CreateAccount(username, password string, email string) (*model.User, error)
 	}
 	err := db.DB.Model(&model.User{}).Create(user).Error
 	if err != nil {
-		return nil,err
+		return nil, err
 	} else {
-		return user,nil
+		return user, nil
 	}
 }
 
@@ -49,6 +49,36 @@ func FindUserByName(name string) (*model.User, error) {
 	} else {
 		return user, nil
 	}
+}
+
+func getUserRelationshipList(userid int64, page, size int, ship int) ([]*model.User, error) {
+	result := []*model.User{}
+	expression := db.DB.Model(&model.UserFollows{}).
+		Select("uid").
+		Where("ship = ?", ship).
+		Where("uid = ?", userid)
+	err := db.DB.Model(&model.User{}).
+		Where("user in (?)", expression).
+		Limit(size).
+		Offset((page - 1) * size).
+		Find(&result).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// 用户关注列表
+func UserFollows(userid int64, page, size int) ([]*model.User, error) {
+	result, err := getUserRelationshipList(userid, page, size, 1)
+	return result, err
+}
+
+// 用户
+func GetUserBlackList(userid int64, page, size int) ([]*model.User, error) {
+	result, err := getUserRelationshipList(userid, page, size, -1)
+	return result, err
 }
 
 // 根据用户名模糊查找
