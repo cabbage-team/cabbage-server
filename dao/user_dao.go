@@ -11,7 +11,7 @@ import (
 )
 
 // CreateAccount 创建用户数据库操作
-func CreateAccount(username, password string, email string) error {
+func CreateAccount(username, password string, email string) (*model.User, error) {
 	user := &model.User{
 		UserId:   uuid.New(),
 		Name:     username,
@@ -20,13 +20,13 @@ func CreateAccount(username, password string, email string) error {
 	}
 	err := db.DB.Model(&model.User{}).Create(user).Error
 	if err != nil {
-		return err
+		return nil, err
 	} else {
-		return nil
+		return user, nil
 	}
 }
 
-// GetUserProfile 获取用户信息数据库操作
+// 根据邮箱查找用户
 func FindUserByEmail(email string) (*model.User, error) {
 	user := &model.User{}
 	err := db.DB.Model(&model.User{}).Where("email = ?", email).First(user).Error
@@ -37,6 +37,7 @@ func FindUserByEmail(email string) (*model.User, error) {
 	}
 }
 
+// 根据用户名查找
 func FindUserByName(name string) (*model.User, error) {
 	user := &model.User{}
 	err := db.DB.Model(&model.User{}).
@@ -50,6 +51,50 @@ func FindUserByName(name string) (*model.User, error) {
 	}
 }
 
+func getUserRelationshipList(userid int64, page, size int, ship int) ([]*model.User, error) {
+	result := []*model.User{}
+	expression := db.DB.Model(&model.UserFollows{}).
+		Select("uid").
+		Where("ship = ?", ship).
+		Where("uid = ?", userid)
+	err := db.DB.Model(&model.User{}).
+		Where("user in (?)", expression).
+		Limit(size).
+		Offset((page - 1) * size).
+		Find(&result).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// 用户关注列表
+func UserFollows(userid int64, page, size int) ([]*model.User, error) {
+	result, err := getUserRelationshipList(userid, page, size, 1)
+	return result, err
+}
+
+// 用户
+func GetUserBlackList(userid int64, page, size int) ([]*model.User, error) {
+	result, err := getUserRelationshipList(userid, page, size, -1)
+	return result, err
+}
+
+// 根据用户名模糊查找
+func FuzzyMatchingByUserName(name string) ([]*model.User, error) {
+	users := []*model.User{}
+	err := db.DB.Model(&model.User{}).
+		Where("name like ?", "%"+name+"%").
+		Find(&users).
+		Error
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+// 统计某月新增用户
 func CountNewUserOfMonth(month int) ([]*model.Counts, error) {
 	timedate := time.Now()
 	var results []*model.Counts
@@ -69,6 +114,7 @@ func CountNewUserOfMonth(month int) ([]*model.Counts, error) {
 	}
 }
 
+// 统计当天新增用户数
 func CountNewUserOfToday() (int64, error) {
 	var count int64
 	err := db.DB.Model(&model.User{}).

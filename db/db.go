@@ -54,6 +54,7 @@ func initAutoMigrate(db *gorm.DB) {
 		&model.PostTag{},
 		&model.Tag{},
 		&model.User{},
+		&model.UserFollows{},
 		&model.UserTag{},
 		&model.UserProfile{},
 		&model.ProfilePlatform{},

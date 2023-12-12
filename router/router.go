@@ -20,6 +20,8 @@ func InitRouter() *gin.Engine {
 	UserAPI.POST("create", controller.CreateAccount)
 	UserAPI.GET("profile", controller.GetUserProfile)
 	UserAPI.GET("name/check", controller.CheckNickName)
+	UserAPI.GET("follows",controller.UserFollows)
+	UserAPI.GET("blacklist",controller.UserBlackList)
 
 	// 参考 https://dev.to/tags
 	TagsAPI := v1Router.Group("tag")
@@ -54,7 +56,11 @@ func InitRouter() *gin.Engine {
 
 	StatAPI := AdminAPI.Group("stat")
 
-	StatAPI.GET("count",controller.Count)
+	StatAPI.GET("all",controller.Count)
+	CountAPI := StatAPI.Group("countoday")
+	CountAPI.GET("post",controller.CountPostOfToday)
+	CountAPI.GET("comment",controller.CountCommentOfToday)
+	CountAPI.GET("user",controller.CountUserOfToday)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }

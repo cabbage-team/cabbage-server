@@ -15,7 +15,7 @@ func Register(account *dto.SignupDTO) error {
 	if err != nil {
 		return internal.UserRegisterError
 	}
-	err = dao.CreateAccount(account.Name, hashString, account.Email)
+	_,err = dao.CreateAccount(account.Name, hashString, account.Email)
 	if err != nil {
 		return internal.UserRegisterError
 	}

@@ -123,7 +123,7 @@ paths:
       summary: get all social platform
       tags:
       - admin
-  /v1/api/admin/stat/count:
+  /v1/api/admin/stat/all:
     get:
       consumes:
       - application/json
@@ -148,6 +148,33 @@ paths:
         type: integer
       responses: {}
       summary: get stat data
+      tags:
+      - admin
+  /v1/api/admin/stat/countoday/comment:
+    get:
+      consumes:
+      - application/json
+      description: 统计平台今日评论数
+      responses: {}
+      summary: get comment number of today
+      tags:
+      - admin
+  /v1/api/admin/stat/countoday/post:
+    get:
+      consumes:
+      - application/json
+      description: 统计平台今日贴子数
+      responses: {}
+      summary: get post number of today
+      tags:
+      - admin
+  /v1/api/admin/stat/countoday/user:
+    get:
+      consumes:
+      - application/json
+      description: 统计平台今日新增用户数
+      responses: {}
+      summary: get user number of today
       tags:
       - admin
   /v1/api/bio/{name}:
@@ -325,6 +352,29 @@ paths:
       summary: create new topic
       tags:
       - topic
+  /v1/api/user/blacklist:
+    get:
+      consumes:
+      - application/json
+      description: 检查昵称
+      parameters:
+      - in: query
+        minimum: 1
+        name: page
+        type: integer
+      - in: query
+        maximum: 20
+        minimum: 1
+        name: size
+        type: integer
+      - in: query
+        minimum: 1
+        name: uid
+        type: integer
+      responses: {}
+      summary: check user name
+      tags:
+      - user
   /v1/api/user/create:
     post:
       consumes:
@@ -339,6 +389,29 @@ paths:
           $ref: '#/definitions/dto.SignupDTO'
       responses: {}
       summary: Create user
+      tags:
+      - user
+  /v1/api/user/follows:
+    get:
+      consumes:
+      - application/json
+      description: 检查昵称
+      parameters:
+      - in: query
+        minimum: 1
+        name: page
+        type: integer
+      - in: query
+        maximum: 20
+        minimum: 1
+        name: size
+        type: integer
+      - in: query
+        minimum: 1
+        name: uid
+        type: integer
+      responses: {}
+      summary: check user name
       tags:
       - user
   /v1/api/user/login:

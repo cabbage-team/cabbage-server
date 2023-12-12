@@ -61,6 +61,7 @@ func FindPostById(pid int64) (*model.Post, error) {
 	}
 }
 
+// 根据标签查找帖子
 func FindPostByTag(tags ...int) ([]*model.Post, error) {
 	postIds := []int64{}
 	err := db.DB.
@@ -87,7 +88,7 @@ func FindPostByTag(tags ...int) ([]*model.Post, error) {
 	return post, nil
 }
 
-
+//操作帖子 对帖子 喜欢  踩 分享 收藏等
 func OperatorPost(postid int64, userid int64, opcode int) error {
 	post, err := FindPostById(postid)
 	if err != nil {
@@ -114,6 +115,7 @@ func OperatorPost(postid int64, userid int64, opcode int) error {
 	return nil
 }
 
+// 创建帖子操作记录
 func CreatePostOperator(uid int64, postid int64, opcode int) (*model.PostOperator, error) {
 	CO := model.PostOperator{
 		UserID: uid,
@@ -128,6 +130,7 @@ func CreatePostOperator(uid int64, postid int64, opcode int) (*model.PostOperato
 	}
 }
 
+// 统计某月新增贴子数
 func CountNewPostOfMonth(month int) ([]*model.Counts, error) {
 	timedate := time.Now()
 	var results []*model.Counts
@@ -147,6 +150,7 @@ func CountNewPostOfMonth(month int) ([]*model.Counts, error) {
 	}
 }
 
+// 统计当天新增贴子数
 func CountNewPostOfToday() (int64, error) {
 	var count int64
 	err := db.DB.Model(&model.Post{}).

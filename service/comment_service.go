@@ -21,8 +21,8 @@ func CreatePostComment(userid int64, comment *dto.CommentDTO) error {
 	return nil
 }
 
-func CommentView(postid int64) ([]*model.Comment, error) {
-	commentList, err := dao.FindCommentByPost(postid)
+func CommentView(postid int64, page, size int) ([]*model.Comment, error) {
+	commentList, err := dao.FindCommentByPost(postid, page, size)
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, internal.InernalError
@@ -41,7 +41,7 @@ func ReplyPostComment(userid int64, postid int64, commentid int64, content strin
 		return internal.CommentNotFound
 	}
 	comment.Parent = commentid
-	comment.Reply += 1
+	comment.Reply++
 	err = dao.UpdateComment(comment)
 	if err != nil {
 		return internal.RecordUpdateError

@@ -5,6 +5,7 @@ import (
 	"cabbage-server/model"
 )
 
+// 新增社交平台
 func AddNewPlatform(name string) (*model.ProfilePlatform, error) {
 	platform := &model.ProfilePlatform{
 		Platform: name,
@@ -17,6 +18,7 @@ func AddNewPlatform(name string) (*model.ProfilePlatform, error) {
 	}
 }
 
+// 获取所有社交平台
 func GetAllPlatform() ([]string, error) {
 	platformList := []string{}
 	err := db.DB.Model(&model.ProfilePlatform{}).
@@ -30,6 +32,7 @@ func GetAllPlatform() ([]string, error) {
 	}
 }
 
+// 根据社交平台名称查找
 func FindPlatformByName(name string) (*model.ProfilePlatform, error) {
 	platform := &model.ProfilePlatform{}
 	err := db.DB.Model(&model.ProfilePlatform{}).

@@ -52,7 +52,7 @@ func GetAllPlatform(c *gin.Context) {
 // @Tags admin
 // @Param request query dto.StatMonthDataDTO true "the month number"
 // @Accept json
-// @Router /v1/api/admin/stat/count [get]
+// @Router /v1/api/admin/stat/all [get]
 func Count(c *gin.Context) {
 	month := &dto.StatMonthDataDTO{}
 	err := c.BindQuery(month)
@@ -66,4 +66,55 @@ func Count(c *gin.Context) {
 		return
 	}
 	response.Success(c, countData)
+}
+
+// CommentCreate
+// @Summary get comment number of today
+// @Description 统计平台今日评论数
+// @Tags admin
+// @Accept json
+// @Router /v1/api/admin/stat/countoday/comment [get]
+func CountCommentOfToday(c *gin.Context) {
+	count, err := service.CountCommentOfToday()
+	if err != nil {
+		response.Error(c, err)
+		return
+	}
+	response.Success(c, gin.H{
+		"count": count,
+	})
+}
+
+// CommentCreate
+// @Summary get post number of today
+// @Description 统计平台今日贴子数
+// @Tags admin
+// @Accept json
+// @Router /v1/api/admin/stat/countoday/post [get]
+func CountPostOfToday(c *gin.Context) {
+	count, err := service.CountPostOfToday()
+	if err != nil {
+		response.Error(c, err)
+		return
+	}
+	response.Success(c, gin.H{
+		"count": count,
+	})
+}
+
+// CommentCreate
+// @Summary get user number of today
+// @Description 统计平台今日新增用户数
+// @Tags admin
+// @Accept json
+// @Router /v1/api/admin/stat/countoday/user [get]
+func CountUserOfToday(c *gin.Context) {
+	count, err := service.CountUserOfToday()
+	if err != nil {
+		response.Error(c, err)
+		return
+	}
+	response.Success(c, gin.H{
+		"count": count,
+	})
 }
