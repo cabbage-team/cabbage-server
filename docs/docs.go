@@ -53,7 +53,7 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/v1/api/admin/stat/count": {
+        "/v1/api/admin/stat/all": {
             "get": {
                 "description": "统计平台信息 今日新增贴子数 评论数 用户数  当月新增用户数 评论数 用户数",
                 "consumes": [
@@ -85,6 +85,45 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
+                "responses": {}
+            }
+        },
+        "/v1/api/admin/stat/countoday/comment": {
+            "get": {
+                "description": "统计平台今日评论数",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "get comment number of today",
+                "responses": {}
+            }
+        },
+        "/v1/api/admin/stat/countoday/post": {
+            "get": {
+                "description": "统计平台今日贴子数",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "get post number of today",
+                "responses": {}
+            }
+        },
+        "/v1/api/admin/stat/countoday/user": {
+            "get": {
+                "description": "统计平台今日新增用户数",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "get user number of today",
                 "responses": {}
             }
         },
@@ -346,6 +385,40 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/v1/api/user/blacklist": {
+            "get": {
+                "description": "检查昵称",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "check user name",
+                "parameters": [
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 20,
+                        "minimum": 1,
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "name": "uid",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/api/user/create": {
             "post": {
                 "description": "创建新用户",
@@ -365,6 +438,40 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dto.SignupDTO"
                         }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/v1/api/user/follows": {
+            "get": {
+                "description": "检查昵称",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "check user name",
+                "parameters": [
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 20,
+                        "minimum": 1,
+                        "type": "integer",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 1,
+                        "type": "integer",
+                        "name": "uid",
+                        "in": "query"
                     }
                 ],
                 "responses": {}
