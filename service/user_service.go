@@ -12,7 +12,7 @@ import (
 
 // CreateAccount 创建新用户服务
 func CreateAccount(user *dto.SignupDTO) (*model.User, error) {
-	_user,err := dao.CreateAccount(user.Name,user.Password,user.Email)
+	_user, err := dao.CreateAccount(user.Name, user.Password, user.Email)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, internal.UserNotFoundError
@@ -95,4 +95,27 @@ func ProfileShare(user string) (map[string]string, error) {
 	}
 
 	return result, nil
+}
+
+// 用户黑名单
+func UserBlackList(userid int64, page, size int) ([]*model.User, error) {
+	list, err := dao.GetUserBlackList(userid, page, size)
+	if err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, internal.InernalError
+		}
+		return nil, internal.UserNotFoundError
+	}
+	return list, nil
+}
+// 用户关注列表
+func UserFollowList(userid int64, page, size int) ([]*model.User, error) {
+	list, err := dao.UserFollows(userid, page, size)
+	if err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, internal.InernalError
+		}
+		return nil, internal.UserNotFoundError
+	}
+	return list, nil
 }
