@@ -1,8 +1,11 @@
 package utils
 
 import (
+	"fmt"
 	"math/rand"
+	"net"
 	"regexp"
+	"strconv"
 	"time"
 )
 
@@ -31,4 +34,33 @@ func RandomString(n int) string {
 	}
 
 	return string(result)
+}
+
+func CheckPortAvailability(port int) bool {
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	if err != nil {
+		return false
+	}
+	defer listener.Close()
+	return true
+}
+
+func ListenerPort(port int) int {
+	newPort := port
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+	for err != nil {
+		newPort += 1
+	}
+	fmt.Printf("the port is %d",newPort)
+	defer listener.Close()
+	return newPort
+}
+
+
+func ToInt(num string) int{
+	val,err := strconv.Atoi(num)
+	if err != nil {
+		return -1
+	}
+	return val
 }
