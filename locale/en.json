@@ -1,0 +1,20 @@
+{
+    "error":{
+        "notFound":"not found",
+        "recordNotFound":"record not found",
+        "recordUpdateErr":"update has wrong",
+        "paramsNotValid":"the parameter is invalid",
+        "userNotFound":"user not found",
+        "userNotAuthorized":"",
+        "userAlreadyExists":""
+    },
+    "status":{
+        "notFound":1000,
+        "recordNotFound":1001,
+        "recordUpdateErr":1002,
+        "paramsNotValid":1003,
+        "userNotFound":1004,
+        "userNotAuthorized":1005,
+        "userAlreadyExists":1006
+    }
+}

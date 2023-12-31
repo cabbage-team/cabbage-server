@@ -1,0 +1,20 @@
+{
+    "error":{
+        "notFound":"未找到",
+        "recordNotFound":"记录未找到",
+        "recordUpdateErr":"提交出错",
+        "paramsNotValid":"请求参数非法",
+        "userNotFound":"用户未找到",
+        "userNotAuthorized":"用户身份未验证",
+        "userAlreadyExists":"用户已经存在"
+    },
+    "status":{
+        "notFound":1000,
+        "recordNotFound":1001,
+        "recordUpdateErr":1002,
+        "paramsNotValid":1003,
+        "userNotFound":1004,
+        "userNotAuthorized":1005,
+        "userAlreadyExists":1006
+    }
+}
