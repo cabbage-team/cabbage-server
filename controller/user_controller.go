@@ -106,7 +106,7 @@ func CheckNickName(c *gin.Context) {
 // @Summary check user name
 // @Description 获取用户关注列表
 // @Tags user
-// @Param request query dto.FollowList true "the user account"
+// @Param request query dto.FollowListDTO true "the user account"
 // @Accept json
 // @Router /v1/api/user/follows [get]
 func UserFollows(c *gin.Context) {
@@ -136,7 +136,7 @@ func UserFollows(c *gin.Context) {
 // @Summary check user name
 // @Description 获取用户黑名单列表
 // @Tags user
-// @Param request query dto.FollowList true "the user account"
+// @Param request query dto.FollowListDTO true "the user account"
 // @Accept json
 // @Router /v1/api/user/blacklist [get]
 func UserBlackList(c *gin.Context) {
