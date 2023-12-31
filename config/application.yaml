@@ -3,10 +3,14 @@ server:
 datasource:
   driverName: mysql
   host: 127.0.0.1
-  port: 3306
+  port: 3308
   database: cabbage
-  username: cabbage
-  password: 123456
+  username: root
+  password: root123456
   charset: utf8mb4
   loc: Asia/Shanghai
   tableprefix: cabbage_
+errors:
+  userNotFound:
+    message: user not found
+    code: 1001

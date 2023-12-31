@@ -191,7 +191,7 @@ paths:
       responses: {}
       summary: profile share
       tags:
-      - post
+      - profile
   /v1/api/comment/create:
     post:
       consumes:
@@ -287,6 +287,21 @@ paths:
       summary: search post
       tags:
       - post
+  /v1/api/profile/avatar:
+    post:
+      consumes:
+      - application/json
+      description: 提交个人头像
+      parameters:
+      - description: 用户头像
+        in: formData
+        name: file
+        required: true
+        type: file
+      responses: {}
+      summary: uploading user avatar
+      tags:
+      - profile
   /v1/api/tag/follow:
     post:
       consumes:
@@ -356,7 +371,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: 检查昵称
+      description: 获取用户黑名单列表
       parameters:
       - in: query
         minimum: 1
@@ -395,7 +410,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: 检查昵称
+      description: 获取用户关注列表
       parameters:
       - in: query
         minimum: 1

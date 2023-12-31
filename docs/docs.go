@@ -134,7 +134,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "post"
+                    "profile"
                 ],
                 "summary": "profile share",
                 "parameters": [
@@ -288,6 +288,28 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/v1/api/profile/avatar": {
+            "post": {
+                "description": "提交个人头像",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "profile"
+                ],
+                "summary": "uploading user avatar",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "用户头像",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/api/tag/follow": {
             "post": {
                 "description": "关注话题",
@@ -387,7 +409,7 @@ const docTemplate = `{
         },
         "/v1/api/user/blacklist": {
             "get": {
-                "description": "检查昵称",
+                "description": "获取用户黑名单列表",
                 "consumes": [
                     "application/json"
                 ],
@@ -445,7 +467,7 @@ const docTemplate = `{
         },
         "/v1/api/user/follows": {
             "get": {
-                "description": "检查昵称",
+                "description": "获取用户关注列表",
                 "consumes": [
                     "application/json"
                 ],
