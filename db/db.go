@@ -7,12 +7,13 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
+	_ "time/tzdata"
 	"net/url"
 )
 
 var DB *gorm.DB
 
-func InitDB(){
+func InitDB() {
 	driverName := viper.GetString("datasource.driverName")
 	host := viper.GetString("datasource.host")
 	port := viper.GetString("datasource.port")
@@ -28,7 +29,8 @@ func InitDB(){
 		port,
 		database,
 		charset,
-		url.QueryEscape(loc))
+		url.QueryEscape(loc),
+	)
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DriverName: driverName,
 		DSN:        args,
