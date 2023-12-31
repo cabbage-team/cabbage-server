@@ -2,7 +2,9 @@ package boot
 
 import (
 	emit "cabbage-server/common/Emit"
+	i18 "cabbage-server/i18n"
 
+	Translate "github.com/jingyuexing/i18n"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -10,6 +12,8 @@ import (
 
 var Logger *zap.Logger
 var Emit *emit.EventEmit
+var I18n *Translate.I18n
+
 func init(){
 	lumberjackLogger := &lumberjack.Logger{
 		Filename:   "app.log", // 设置日志文件名
@@ -34,6 +38,9 @@ func init(){
 	// 创建Logger
 	Logger = zap.New(core)
 
+	
 	// emit
 	Emit = emit.NewEventEmit()
+
+	I18n = i18.I18N
 }
